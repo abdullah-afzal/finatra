@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Understanding the Codebase &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Understanding the Codebase &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="basics.html" title="Finatra Basics"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Understanding the Codebase</a></li> 
       </ul>
     </div>  
 
@@ -59,7 +59,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="understanding-the-codebase">
+  <section id="understanding-the-codebase">
 <span id="framework"></span><h1>Understanding the Codebase<a class="headerlink" href="#understanding-the-codebase" title="Permalink to this headline">¶</a></h1>
 <p>Finatra is divided into three main parts: <code class="docutils literal notranslate"><span class="pre">inject</span></code>, <code class="docutils literal notranslate"><span class="pre">http</span></code>, and <code class="docutils literal notranslate"><span class="pre">thrift</span></code>. The <cite>inject</cite> part of
 the framework contains all of the base functionality for integration of the <a class="reference external" href="https://github.com/google/guice">Guice</a>
@@ -72,80 +72,81 @@ to the framework or that span both http and thrift services.</p>
 <p>Everything else in the Finatra codebase is in the <code class="docutils literal notranslate"><span class="pre">com.twitter.finatra</span></code> package namespace and has
 dependencies on the <cite>inject</cite> libraries as well as other libraries.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Classes in <em>internal</em> packages (e.g., <cite>com.twitter.finatra.http.internal</cite>) are not expected to
+<p class="admonition-title">Note</p>
+<p>Classes in <em>internal</em> packages (e.g., <cite>com.twitter.finatra.http.internal</cite>) are not expected to
 be used directly and no guarantee is given as to the stability of their interfaces. Please do
 not use internal package namespaces directly.</p>
 </div>
 <img alt="Diagram of the Finatra Framework" src="../../_images/framework.png" />
-<div class="section" id="inject">
+<section id="inject">
 <h2>Inject<a class="headerlink" href="#inject" title="Permalink to this headline">¶</a></h2>
 <p>Modules in <cite>inject</cite> include:</p>
 <ul class="simple">
-<li><cite>inject-core</cite> - core library which defines the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/TwitterModule.scala">TwitterModule</a>,
+<li><p><cite>inject-core</cite> - core library which defines the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/TwitterModule.scala">TwitterModule</a>,
 <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a>,
 and the framework <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/TwitterModuleFlags.scala">TwitterModuleFlags</a>
-for defining injectable <a class="reference external" href="https://github.com/twitter/util">TwitterUtil</a> <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/Flag.scala">Flags</a>.</li>
-<li><cite>inject-modules</cite> - core library which defines framework modules.</li>
-<li><cite>inject-app</cite> - core integration with <a class="reference external" href="https://twitter.github.io/util/docs/com/twitter/app/App.html">c.t.app.App</a></li>
-<li><cite>inject-server</cite> - core integration with <cite>c.t.server.TwitterServer</cite>.</li>
-<li><cite>inject-slf4j</cite> - core library integration with the <a class="reference external" href="https://www.slf4j.org/manual.html">SLF4J</a> API.
+for defining injectable <a class="reference external" href="https://github.com/twitter/util">TwitterUtil</a> <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/Flag.scala">Flags</a>.</p></li>
+<li><p><cite>inject-modules</cite> - core library which defines framework modules.</p></li>
+<li><p><cite>inject-app</cite> - core integration with <a class="reference external" href="https://twitter.github.io/util/docs/com/twitter/app/App.html">c.t.app.App</a></p></li>
+<li><p><cite>inject-server</cite> - core integration with <cite>c.t.server.TwitterServer</cite>.</p></li>
+<li><p><cite>inject-slf4j</cite> - core library integration with the <a class="reference external" href="https://www.slf4j.org/manual.html">SLF4J</a> API.
 Also provides support for bridging Logback’s <a class="reference external" href="https://logback.qos.ch/manual/mdc.html">Mapped Diagnostic Context</a>
 with Finagle. See <a class="reference external" href="../logging/logback.html#mapped-diagnostic-context-filter">Mapped Diagnostic Context Filter</a>
-Logback documentation for more information.</li>
-<li><cite>inject-request-scope</cite> - core library for integrating <a class="reference external" href="https://github.com/google/guice">Guice</a>’s
+Logback documentation for more information.</p></li>
+<li><p><cite>inject-request-scope</cite> - core library for integrating <a class="reference external" href="https://github.com/google/guice">Guice</a>’s
 <cite>Request Scope</cite> with <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/Future.scala">TwitterUtil</a>
-<cite>c.t.util.Future</cite>. See the <a class="reference external" href="../http/filters.html#request-scope">Request Scope</a> section for more information.</li>
-<li><cite>inject-thrift</cite> - core library for thrift utilities useful for both clients and server.</li>
-<li><cite>inject-thrift-client</cite> - core library for supporting creation of a Thrift <a class="reference external" href="https://twitter.github.io/finagle/guide/Clients.html">Finagle Client</a>.</li>
-<li><cite>inject-utils</cite> - core library which provides a collection of useful utilities, including implicit
-conversions, exceptions and futures handling and retries.</li>
+<cite>c.t.util.Future</cite>. See the <a class="reference external" href="../http/filters.html#request-scope">Request Scope</a> section for more information.</p></li>
+<li><p><cite>inject-thrift</cite> - core library for thrift utilities useful for both clients and server.</p></li>
+<li><p><cite>inject-thrift-client</cite> - core library for supporting creation of a Thrift <a class="reference external" href="https://twitter.github.io/finagle/guide/Clients.html">Finagle Client</a>.</p></li>
+<li><p><cite>inject-utils</cite> - core library which provides a collection of useful utilities, including implicit
+conversions, exceptions and futures handling and retries.</p></li>
 </ul>
-<div class="section" id="creating-an-injectable-app-or-twitterserver">
+<section id="creating-an-injectable-app-or-twitterserver">
 <h3>Creating an injectable App or TwitterServer<a class="headerlink" href="#creating-an-injectable-app-or-twitterserver" title="Permalink to this headline">¶</a></h3>
 <p>See: <a class="reference external" href="../app/index.html">Building an injectable c.t.app.App</a> or <a class="reference external" href="../twitter-server/index.html">Building an injectable c.t.server.TwitterServer</a>.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">It is important to remember that the Finatra framework establishes an order of the lifecycle of an
+<p class="admonition-title">Important</p>
+<p>It is important to remember that the Finatra framework establishes an order of the lifecycle of an
 application or server. See the <a class="reference external" href="lifecycle.html">Application and Server Lifecycle</a> section for
 more information.</p>
 </div>
-</div>
-</div>
-<div class="section" id="jackson">
+</section>
+</section>
+<section id="jackson">
 <h2>Jackson<a class="headerlink" href="#jackson" title="Permalink to this headline">¶</a></h2>
 <p>Finatra’s integration with <a class="reference external" href="https://github.com/FasterXML/jackson-module-scala">jackson-module-scala</a>
 for JSON support. See the <a class="reference external" href="../json/index.html">Jackson Integration</a> section for more details.</p>
-</div>
-<div class="section" id="httpclient">
+</section>
+<section id="httpclient">
 <h2>HttpClient<a class="headerlink" href="#httpclient" title="Permalink to this headline">¶</a></h2>
 <p>A simple and barebones <a class="reference external" href="https://twitter.github.io/finagle/guide/Clients.html">Finagle Client</a> for
 making HTTP requests.</p>
-</div>
-<div class="section" id="http">
+</section>
+<section id="http">
 <h2>HTTP<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h2>
 <p>Base library for HTTP services. See the <a class="reference external" href="../http/server.html">HTTP Server Definition</a> section for
 more information.</p>
-</div>
-<div class="section" id="thrift">
+</section>
+<section id="thrift">
 <h2>Thrift<a class="headerlink" href="#thrift" title="Permalink to this headline">¶</a></h2>
 <p>Base library for Thrift services. See the <a class="reference external" href="../thrift/basics.html">Thrift Basics</a> and <a class="reference external" href="../thrift/server.html">Thrift
 Server Definition</a> sections for more details.</p>
-</div>
-<div class="section" id="utils">
+</section>
+<section id="utils">
 <h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h2>
 <p>A collection of framework utilities that are specifically useful in HTTP or Thrift.</p>
-</div>
-<div class="section" id="other">
+</section>
+<section id="other">
 <h2>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><cite>inject-thrift-client-http-mapper</cite> - a library which bridges <cite>inject-thrift-client</cite> and <cite>http</cite>
-libraries to provide an exception mapper for mapping thrift exceptions to HTTP responses.</li>
+<li><p><cite>inject-thrift-client-http-mapper</cite> - a library which bridges <cite>inject-thrift-client</cite> and <cite>http</cite>
+libraries to provide an exception mapper for mapping thrift exceptions to HTTP responses.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -211,7 +212,7 @@ libraries to provide an exception mapper for mapping thrift exceptions to HTTP r
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

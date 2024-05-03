@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Startup Tests &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Startup Tests &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="integration_tests.html" title="Integration Tests"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Startup Tests</a></li> 
       </ul>
     </div>  
 
@@ -59,11 +59,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="startup-tests">
+  <section id="startup-tests">
 <span id="id1"></span><h1>Startup Tests<a class="headerlink" href="#startup-tests" title="Permalink to this headline">¶</a></h1>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Please see the section on including test-jar dependencies in your project: <a class="reference external" href="../..#test-dependencies">Test Dependencies</a>.</p>
+<p class="admonition-title">Important</p>
+<p>Please see the section on including test-jar dependencies in your project: <a class="reference external" href="../..#test-dependencies">Test Dependencies</a>.</p>
 </div>
 <p>By default the Finatra embedded testing infrastructure sets the <a class="reference external" href="https://github.com/google/guice">Guice</a>
 <a class="reference external" href="https://google.github.io/guice/api-docs/4.0/javadoc/com/google/inject/Stage.html"><cite>com.google.inject.Stage</cite></a> to <cite>DEVELOPMENT</cite> for the object graph of the server or application under
@@ -77,46 +77,46 @@ as dependencies are satisfied lazily by default.</p>
 <p>As such, we recommend creating a test – a <cite>StartupTest</cite> to check that your service can start
 up and report itself as healthy. This is useful for checking the correctness of the object graph,
 catching errors that could otherwise cause the server to fail to start.</p>
-<div class="section" id="best-practices">
+<section id="best-practices">
 <h2>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this headline">¶</a></h2>
 <p>A <cite>StartupTest</cite> should mimic production as closely as possible.</p>
 <ul class="simple">
-<li>The <a class="reference external" href="https://google.github.io/guice/api-docs/4.0/javadoc/com/google/inject/Stage.html"><cite>com.google.inject.Stage</cite></a> SHOULD be set to <cite>PRODUCTION</cite> so that all singletons will be
-eagerly created at startup (<cite>Stage.DEVELOPMENT</cite> is set by default).</li>
-<li>Avoid replacing any bound types (do not use <a class="reference external" href="bind_dsl.html">Explicit Binding with #bind[T]</a> or
-<a class="reference external" href="override_modules.html">Override Modules</a>).</li>
-<li>Prevent any Finagle clients from making outbound connections during startup by setting the
-resolution of clients to <cite>nil</cite>. See: <a class="reference external" href="feature_tests.html#disabling-clients-using-dtabs">Disabling Client using Dtabs</a>.</li>
+<li><p>The <a class="reference external" href="https://google.github.io/guice/api-docs/4.0/javadoc/com/google/inject/Stage.html"><cite>com.google.inject.Stage</cite></a> SHOULD be set to <cite>PRODUCTION</cite> so that all singletons will be
+eagerly created at startup (<cite>Stage.DEVELOPMENT</cite> is set by default).</p></li>
+<li><p>Avoid replacing any bound types (do not use <a class="reference external" href="bind_dsl.html">Explicit Binding with #bind[T]</a> or
+<a class="reference external" href="override_modules.html">Override Modules</a>).</p></li>
+<li><p>Prevent any Finagle clients from making outbound connections during startup by setting the
+resolution of clients to <cite>nil</cite>. See: <a class="reference external" href="feature_tests.html#disabling-clients-using-dtabs">Disabling Client using Dtabs</a>.</p></li>
 </ul>
 <p>For example:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.google.inject.Stage</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.http.EmbeddedHttpServer</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.server.FeatureTest</span>
-<span class="k">import</span> <span class="nn">scala.collection.immutable.ListMap</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">google</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">Stage</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">EmbeddedHttpServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">FeatureTest</span>
+<span class="k">import</span> <span class="nn">scala</span><span class="p">.</span><span class="nn">collection</span><span class="p">.</span><span class="nn">immutable</span><span class="p">.</span><span class="nc">ListMap</span>
 
-<span class="k">class</span> <span class="nc">MyServiceStartupTest</span> <span class="k">extends</span> <span class="nc">FeatureTest</span> <span class="o">{</span>
-  <span class="k">val</span> <span class="n">server</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">EmbeddedHttpServer</span><span class="o">(</span>
-    <span class="n">stage</span> <span class="k">=</span> <span class="nc">Stage</span><span class="o">.</span><span class="nc">PRODUCTION</span><span class="o">,</span>
-    <span class="n">twitterServer</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SampleApiServer</span><span class="o">,</span>
-    <span class="n">globalFlags</span> <span class="k">=</span> <span class="nc">ListMap</span><span class="o">(</span><span class="n">com</span><span class="o">.</span><span class="n">some</span><span class="o">.</span><span class="n">globalFlag</span><span class="o">.</span><span class="n">disable</span> <span class="o">-&gt;</span> <span class="s">&quot;true&quot;</span><span class="o">),</span>
-    <span class="n">flags</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span>
-      <span class="s">&quot;dtab.add&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;/$/inet=&gt;/$/nil;/zk=&gt;/$/nil&quot;</span><span class="o">)</span>
-  <span class="o">)</span>
+<span class="k">class</span> <span class="nc">MyServiceStartupTest</span> <span class="k">extends</span> <span class="nc">FeatureTest</span> <span class="p">{</span>
+  <span class="kd">val</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmbeddedHttpServer</span><span class="p">(</span>
+    <span class="n">stage</span> <span class="o">=</span> <span class="nc">Stage</span><span class="p">.</span><span class="nc">PRODUCTION</span><span class="p">,</span>
+    <span class="n">twitterServer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SampleApiServer</span><span class="p">,</span>
+    <span class="n">globalFlags</span> <span class="o">=</span> <span class="nc">ListMap</span><span class="p">(</span><span class="n">com</span><span class="p">.</span><span class="n">some</span><span class="p">.</span><span class="n">globalFlag</span><span class="p">.</span><span class="n">disable</span> <span class="o">-&gt;</span> <span class="s">&quot;true&quot;</span><span class="p">),</span>
+    <span class="n">flags</span> <span class="o">=</span> <span class="nc">Map</span><span class="p">(</span>
+      <span class="s">&quot;dtab.add&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;/$/inet=&gt;/$/nil;/zk=&gt;/$/nil&quot;</span><span class="p">)</span>
+  <span class="p">)</span>
 
-  <span class="n">test</span><span class="o">(</span><span class="s">&quot;SampleApiServer#startup&quot;</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">server</span><span class="o">.</span><span class="n">assertHealthy</span><span class="o">()</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="n">test</span><span class="p">(</span><span class="s">&quot;SampleApiServer#startup&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">server</span><span class="p">.</span><span class="n">assertHealthy</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">This works for <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/http-server/src/test/scala/com/twitter/finatra/http/EmbeddedHttpServer.scala"><cite>EmbeddedHttpServer</cite></a> or <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/thrift/src/test/scala/com/twitter/finatra/thrift/EmbeddedThriftServer.scala"><cite>EmbeddedThriftServer</cite></a> as well because <code class="docutils literal notranslate"><span class="pre">#assertHealthy()</span></code>
+<p class="admonition-title">Tip</p>
+<p>This works for <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/http-server/src/test/scala/com/twitter/finatra/http/EmbeddedHttpServer.scala"><cite>EmbeddedHttpServer</cite></a> or <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/thrift/src/test/scala/com/twitter/finatra/thrift/EmbeddedThriftServer.scala"><cite>EmbeddedThriftServer</cite></a> as well because <code class="docutils literal notranslate"><span class="pre">#assertHealthy()</span></code>
 is defined on the <a class="reference external" href="https://github.com/twitter/finatra/blob/c6e4716f082c0c8790d06d9e1664aacbd0c3fede/inject/inject-server/src/test/scala/com/twitter/inject/server/EmbeddedTwitterServer.scala#L264"><cite>EmbeddedTwitterServer</cite></a> super class.</p>
 </div>
 <p>For examples of how to accomplish this in Java, see <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/examples/http-server/java/src/test/java/com/twitter/finatra/example/HelloWorldServerStartupTest.java"><cite>HelloWorldServerStartupTest</cite></a>.</p>
-</div>
-<div class="section" id="c-t-server-twitterserver">
+</section>
+<section id="c-t-server-twitterserver">
 <h2><a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a><a class="headerlink" href="#c-t-server-twitterserver" title="Permalink to this headline">¶</a></h2>
 <p>As seen previously, Finatra’s <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-server/src/test/scala/com/twitter/inject/server/FeatureTest.scala"><cite>c.t.inject.server.FeatureTest</cite></a> utility can be used for testing any
 extension of <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a> – the server under test does not specifically have to
@@ -124,67 +124,67 @@ be a server written using the Finatra framework.</p>
 <p>Here is an example of writing a StartupTest that starts a <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a> and asserts
 that it reports itself “healthy”.</p>
 <p>Given a simple <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a>:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.finagle.</span><span class="o">{</span><span class="nc">Http</span><span class="o">,</span> <span class="nc">ListeningServer</span><span class="o">,</span> <span class="nc">Service</span><span class="o">}</span>
-<span class="k">import</span> <span class="nn">com.twitter.finagle.http.</span><span class="o">{</span><span class="nc">Status</span><span class="o">,</span> <span class="nc">Response</span><span class="o">,</span> <span class="nc">Request</span><span class="o">}</span>
-<span class="k">import</span> <span class="nn">com.twitter.server.TwitterServer</span>
-<span class="k">import</span> <span class="nn">com.twitter.util.</span><span class="o">{</span><span class="nc">Await</span><span class="o">,</span> <span class="nc">Future</span><span class="o">}</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.{</span><span class="nc">Http</span><span class="p">,</span> <span class="nc">ListeningServer</span><span class="p">,</span> <span class="nc">Service</span><span class="p">}</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">http</span><span class="p">.{</span><span class="nc">Status</span><span class="p">,</span> <span class="nc">Response</span><span class="p">,</span> <span class="nc">Request</span><span class="p">}</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">TwitterServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.{</span><span class="nc">Await</span><span class="p">,</span> <span class="nc">Future</span><span class="p">}</span>
 
-<span class="k">class</span> <span class="nc">MyTwitterServer</span> <span class="k">extends</span> <span class="nc">TwitterServer</span> <span class="o">{</span>
-  <span class="k">private</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">val</span> <span class="n">httpPortFlag</span> <span class="k">=</span>
-    <span class="n">flag</span><span class="o">(</span><span class="n">name</span> <span class="k">=</span> <span class="s">&quot;http.port&quot;</span><span class="o">,</span> <span class="n">default</span> <span class="k">=</span> <span class="s">&quot;:8888&quot;</span><span class="o">,</span> <span class="n">help</span> <span class="k">=</span> <span class="s">&quot;External HTTP server port&quot;</span><span class="o">)</span>
+<span class="k">class</span> <span class="nc">MyTwitterServer</span> <span class="k">extends</span> <span class="nc">TwitterServer</span> <span class="p">{</span>
+  <span class="k">private</span><span class="p">[</span><span class="bp">this</span><span class="p">]</span> <span class="kd">val</span> <span class="n">httpPortFlag</span> <span class="o">=</span>
+    <span class="n">flag</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;http.port&quot;</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s">&quot;:8888&quot;</span><span class="p">,</span> <span class="n">help</span> <span class="o">=</span> <span class="s">&quot;External HTTP server port&quot;</span><span class="p">)</span>
 
-  <span class="k">private</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">def</span> <span class="n">responseString</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;Hello, world!&quot;</span>
-  <span class="k">private</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">val</span> <span class="n">service</span> <span class="k">=</span> <span class="nc">Service</span><span class="o">.</span><span class="n">mk</span><span class="o">[</span><span class="kt">Request</span>, <span class="kt">Response</span><span class="o">]</span> <span class="o">{</span> <span class="n">request</span> <span class="k">=&gt;</span>
-    <span class="k">val</span> <span class="n">response</span> <span class="k">=</span>
-      <span class="nc">Response</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="n">version</span><span class="o">,</span> <span class="nc">Status</span><span class="o">.</span><span class="nc">Ok</span><span class="o">)</span>
-    <span class="n">response</span><span class="o">.</span><span class="n">contentString</span> <span class="k">=</span> <span class="n">responseString</span>
-    <span class="nc">Future</span><span class="o">.</span><span class="n">value</span><span class="o">(</span><span class="n">response</span><span class="o">)</span>
-  <span class="o">}</span>
+  <span class="k">private</span><span class="p">[</span><span class="bp">this</span><span class="p">]</span> <span class="k">def</span> <span class="nf">responseString</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="s">&quot;Hello, world!&quot;</span>
+  <span class="k">private</span><span class="p">[</span><span class="bp">this</span><span class="p">]</span> <span class="kd">val</span> <span class="n">service</span> <span class="o">=</span> <span class="nc">Service</span><span class="p">.</span><span class="n">mk</span><span class="p">[</span><span class="nc">Request</span><span class="p">,</span> <span class="nc">Response</span><span class="p">]</span> <span class="p">{</span> <span class="n">request</span> <span class="o">=&gt;</span>
+    <span class="kd">val</span> <span class="n">response</span> <span class="o">=</span>
+      <span class="nc">Response</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">version</span><span class="p">,</span> <span class="nc">Status</span><span class="p">.</span><span class="nc">Ok</span><span class="p">)</span>
+    <span class="n">response</span><span class="p">.</span><span class="n">contentString</span> <span class="o">=</span> <span class="n">responseString</span>
+    <span class="nc">Future</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+  <span class="p">}</span>
 
   <span class="cm">/** Simple way to expose the bound port once the external listening server is started */</span>
-  <span class="nd">@volatile</span> <span class="k">private</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">var</span> <span class="nc">_httpExternalPort</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span>
-  <span class="k">def</span> <span class="n">httpExternalPort</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="k">this</span><span class="o">.</span><span class="nc">_httpExternalPort</span>
+  <span class="nd">@volatile</span> <span class="k">private</span><span class="p">[</span><span class="bp">this</span><span class="p">]</span> <span class="kd">var</span> <span class="n">_httpExternalPort</span><span class="p">:</span> <span class="nc">Option</span><span class="p">[</span><span class="nc">Int</span><span class="p">]</span> <span class="o">=</span> <span class="nc">None</span>
+  <span class="k">def</span> <span class="nf">httpExternalPort</span><span class="p">:</span> <span class="nc">Option</span><span class="p">[</span><span class="nc">Int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">this</span><span class="p">.</span><span class="n">_httpExternalPort</span>
 
-  <span class="k">def</span> <span class="n">main</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="k">val</span> <span class="n">server</span><span class="k">:</span> <span class="kt">ListeningServer</span> <span class="o">=</span> <span class="nc">Http</span><span class="o">.</span><span class="n">server</span>
-      <span class="o">.</span><span class="n">withLabel</span><span class="o">(</span><span class="s">&quot;http&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="n">serve</span><span class="o">(</span><span class="n">httpPortFlag</span><span class="o">(),</span> <span class="n">service</span><span class="o">)</span>
-    <span class="n">info</span><span class="o">(</span><span class="s">s&quot;Serving on port </span><span class="si">${</span><span class="n">httpPortFlag</span><span class="o">()</span><span class="si">}</span><span class="s">&quot;</span><span class="o">)</span>
-    <span class="n">info</span><span class="o">(</span><span class="s">s&quot;Serving admin interface on port </span><span class="si">${</span><span class="n">adminPort</span><span class="o">()</span><span class="si">}</span><span class="s">&quot;</span><span class="o">)</span>
-    <span class="n">onExit</span> <span class="o">{</span>
-      <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">server</span><span class="o">.</span><span class="n">close</span><span class="o">())</span>
-    <span class="o">}</span>
-    <span class="k">this</span><span class="o">.</span><span class="nc">_httpExternalPort</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">server</span><span class="o">.</span><span class="n">boundAddress</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">InetSocketAddress</span><span class="o">].</span><span class="n">getPort</span><span class="o">)</span>
-    <span class="nc">Await</span><span class="o">.</span><span class="n">ready</span><span class="o">(</span><span class="n">server</span><span class="o">)</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="k">def</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="n">server</span><span class="p">:</span> <span class="nc">ListeningServer</span> <span class="o">=</span> <span class="nc">Http</span><span class="p">.</span><span class="n">server</span>
+      <span class="p">.</span><span class="n">withLabel</span><span class="p">(</span><span class="s">&quot;http&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="n">serve</span><span class="p">(</span><span class="n">httpPortFlag</span><span class="p">(),</span> <span class="n">service</span><span class="p">)</span>
+    <span class="n">info</span><span class="p">(</span><span class="s">s&quot;Serving on port </span><span class="si">${</span><span class="n">httpPortFlag</span><span class="p">()</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">info</span><span class="p">(</span><span class="s">s&quot;Serving admin interface on port </span><span class="si">${</span><span class="n">adminPort</span><span class="p">()</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">onExit</span> <span class="p">{</span>
+      <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">server</span><span class="p">.</span><span class="n">close</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="bp">this</span><span class="p">.</span><span class="n">_httpExternalPort</span> <span class="o">=</span> <span class="nc">Some</span><span class="p">(</span><span class="n">server</span><span class="p">.</span><span class="n">boundAddress</span><span class="p">.</span><span class="k">asInstanceOf</span><span class="p">[</span><span class="nc">InetSocketAddress</span><span class="p">].</span><span class="n">getPort</span><span class="p">)</span>
+    <span class="nc">Await</span><span class="p">.</span><span class="n">ready</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>For examples of how to accomplish this in Java, see <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/examples/injectable-twitter-server/java/src/test/java/com/twitter/finatra/example/ExampleTwitterServerStartupTest.java"><cite>ExampleTwitterServerStartupTest</cite></a>.</p>
-<div class="section" id="writing-the-startuptest">
+<section id="writing-the-startuptest">
 <h3>Writing the StartupTest<a class="headerlink" href="#writing-the-startuptest" title="Permalink to this headline">¶</a></h3>
 <p>First, extend the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-server/src/test/scala/com/twitter/inject/server/FeatureTest.scala"><cite>c.t.inject.server.FeatureTest</cite></a> trait. Then override the <cite>server</cite> definition
 with an instance of your <a class="reference external" href="https://github.com/twitter/finatra/blob/c6e4716f082c0c8790d06d9e1664aacbd0c3fede/inject/inject-server/src/test/scala/com/twitter/inject/server/EmbeddedTwitterServer.scala#L264"><cite>EmbeddedTwitterServer</cite></a> which wraps your <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a>
 under test.</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.inject.server.</span><span class="o">{</span><span class="nc">EmbeddedTwitterServer</span><span class="o">,</span> <span class="nc">FeatureTest</span><span class="o">,</span> <span class="nc">PortUtils</span><span class="o">}</span>
-<span class="k">import</span> <span class="nn">scala.collection.immutable.ListMap</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nn">server</span><span class="p">.{</span><span class="nc">EmbeddedTwitterServer</span><span class="p">,</span> <span class="nc">FeatureTest</span><span class="p">,</span> <span class="nc">PortUtils</span><span class="p">}</span>
+<span class="k">import</span> <span class="nn">scala</span><span class="p">.</span><span class="nn">collection</span><span class="p">.</span><span class="nn">immutable</span><span class="p">.</span><span class="nc">ListMap</span>
 
-<span class="k">class</span> <span class="nc">MyTwitterServerFeatureTest</span> <span class="k">extends</span> <span class="nc">FeatureTest</span> <span class="o">{</span>
+<span class="k">class</span> <span class="nc">MyTwitterServerFeatureTest</span> <span class="k">extends</span> <span class="nc">FeatureTest</span> <span class="p">{</span>
 
-  <span class="k">override</span> <span class="k">protected</span> <span class="k">val</span> <span class="n">server</span> <span class="k">=</span>
-    <span class="k">new</span> <span class="nc">EmbeddedTwitterServer</span><span class="o">(</span>
-      <span class="n">twitterServer</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">MyTwitterServer</span><span class="o">,</span>
-      <span class="n">globalFlags</span> <span class="k">=</span> <span class="nc">ListMap</span><span class="o">(</span><span class="n">com</span><span class="o">.</span><span class="n">some</span><span class="o">.</span><span class="n">globalFlag</span><span class="o">.</span><span class="n">disable</span> <span class="o">-&gt;</span> <span class="s">&quot;true&quot;</span><span class="o">),</span>
-      <span class="n">flags</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span>
-        <span class="s">&quot;http.port&quot;</span> <span class="o">-&gt;</span> <span class="nc">PortUtils</span><span class="o">.</span><span class="n">ephemeralLoopback</span><span class="o">,</span>
+  <span class="k">override</span> <span class="k">protected</span> <span class="kd">val</span> <span class="n">server</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">EmbeddedTwitterServer</span><span class="p">(</span>
+      <span class="n">twitterServer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyTwitterServer</span><span class="p">,</span>
+      <span class="n">globalFlags</span> <span class="o">=</span> <span class="nc">ListMap</span><span class="p">(</span><span class="n">com</span><span class="p">.</span><span class="n">some</span><span class="p">.</span><span class="n">globalFlag</span><span class="p">.</span><span class="n">disable</span> <span class="o">-&gt;</span> <span class="s">&quot;true&quot;</span><span class="p">),</span>
+      <span class="n">flags</span> <span class="o">=</span> <span class="nc">Map</span><span class="p">(</span>
+        <span class="s">&quot;http.port&quot;</span> <span class="o">-&gt;</span> <span class="nc">PortUtils</span><span class="p">.</span><span class="n">ephemeralLoopback</span><span class="p">,</span>
         <span class="s">&quot;dtab.add&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;/$/inet=&gt;/$/nil;/zk=&gt;/$/nil&quot;</span>
-      <span class="o">)</span>
-    <span class="o">)</span>
+      <span class="p">)</span>
+    <span class="p">)</span>
 
-  <span class="n">test</span><span class="o">(</span><span class="s">&quot;MyTwitterServer#starts&quot;</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">server</span><span class="o">.</span><span class="n">isHealthy</span> <span class="n">should</span> <span class="n">be</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="n">test</span><span class="p">(</span><span class="s">&quot;MyTwitterServer#starts&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">server</span><span class="p">.</span><span class="n">isHealthy</span> <span class="n">should</span> <span class="n">be</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>It is important to note that for a “non-injectable” TwitterServer, i.e., a direct extension of
@@ -208,34 +208,35 @@ to report itself as “started” in the <a class="reference external" href="htt
 the <a class="reference external" href="../getting-started/twitter_server.html#http-admin-interface">HTTP Admin Interface</a>
 which is started in the <cite>premain</cite> phase.</p>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
+<p class="admonition-title">Caution</p>
 <p>If all of your <cite>c.t.server.TwitterServer</cite> logic is contained in the <cite>main</cite> of your server (like
 Finagle client creation, external ListeningServer creation, etc), it is very possible when the
 server under test is started in a separate thread, the TwitterServer <cite>HTTP Admin Interface</cite> will
 start and report that it is healthy, then the test process will exit before the server under
 test in the other thread has gotten to executing its <cite>main</cite> method and thus exiting before
 exercising any logic.</p>
-<p class="last">In cases like this, you should also ensure to test the logic of your server in regular <a class="reference external" href="feature_tests.html">FeatureTests</a>
+<p>In cases like this, you should also ensure to test the logic of your server in regular <a class="reference external" href="feature_tests.html">FeatureTests</a>
 and not only assert it is reported as healthy. Again, see the documentation on the
 <a class="reference external" href="../getting-started/lifecycle.html">Application and Server Lifecycle</a> for more information.</p>
 </div>
-</div>
-</div>
-<div class="section" id="more-information">
+</section>
+</section>
+<section id="more-information">
 <h2>More Information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="index.html"><span class="doc">Testing Features</span></a></li>
-<li><a class="reference internal" href="embedded.html"><span class="doc">Embedded Servers and Apps</span></a></li>
-<li><a class="reference internal" href="feature_tests.html"><span class="doc">Feature Tests</span></a></li>
-<li><a class="reference internal" href="integration_tests.html"><span class="doc">Integration Tests</span></a></li>
-<li><a class="reference internal" href="mixins.html"><span class="doc">Test Mixins</span></a></li>
-<li><a class="reference internal" href="override_modules.html"><span class="doc">Override Modules</span></a></li>
-<li><a class="reference internal" href="bind_dsl.html"><span class="doc">Explicit Binding with #bind[T]</span></a></li>
+<li><p><a class="reference internal" href="index.html"><span class="doc">Testing Features</span></a></p></li>
+<li><p><a class="reference internal" href="embedded.html"><span class="doc">Embedded Servers and Apps</span></a></p></li>
+<li><p><a class="reference internal" href="feature_tests.html"><span class="doc">Feature Tests</span></a></p></li>
+<li><p><a class="reference internal" href="integration_tests.html"><span class="doc">Integration Tests</span></a></p></li>
+<li><p><a class="reference internal" href="mixins.html"><span class="doc">Test Mixins</span></a></p></li>
+<li><p><a class="reference internal" href="override_modules.html"><span class="doc">Override Modules</span></a></p></li>
+<li><p><a class="reference internal" href="bind_dsl.html"><span class="doc">Explicit Binding with #bind[T]</span></a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -297,7 +298,7 @@ and not only assert it is reported as healthy. Again, see the documentation on t
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

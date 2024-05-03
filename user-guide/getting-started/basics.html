@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Finatra Basics &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Finatra Basics &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="../index.html" title="User’s Guide"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Finatra Basics</a></li> 
       </ul>
     </div>  
 
@@ -59,7 +59,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="finatra-basics">
+  <section id="finatra-basics">
 <span id="basics"></span><h1>Finatra Basics<a class="headerlink" href="#finatra-basics" title="Permalink to this headline">¶</a></h1>
 <p>At a high level, you can think of your Finatra app or server as a container. This container has a <a class="reference external" href="../getting-started/lifecycle.html">lifecycle</a> and some “state”. This state includes <a class="reference external" href="../getting-started/flags.html">Flags</a> and <a class="reference external" href="../getting-started/modules.html">Modules</a> which help to create an <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a> that provides access to an <a class="reference external" href="../getting-started/dependency_injection.html#why-use-the-object-graph">object graph</a>.</p>
 <p>The <a class="reference external" href="../getting-started/lifecycle.html">lifecycle</a> defines an order of operations for container startup, running, and shutdown that allows for you to hook into phases as necessary to ensure the proper initialization or teardown of your container.</p>
@@ -67,17 +67,18 @@
 <p><a class="reference external" href="../getting-started/flags.html">Flags</a> are constructs that allow your container to accept and parse command-line input in a type-safe manner which can be used to help configure container resources (like database connections, or network clients, etc). <a class="reference external" href="../getting-started/flags.html">Flags</a> are parsed at a <a class="reference external" href="../getting-started/flags.html#when-are-flags-parsed">specific point in the container lifecycle</a>, so it is important to take care in how/when they are accessed with the recommended way being to always access parsed values <a class="reference external" href="../getting-started/flags.html#id3">via injection</a>.</p>
 <p><a class="reference external" href="../getting-started/modules.html">Modules</a> are used to help the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a> create instances (typically of code that <a class="reference external" href="../getting-started/modules.html#defining-modules">is not your own</a>) to keep in the <a class="reference external" href="../getting-started/dependency_injection.html#why-use-the-object-graph">object graph</a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>It is not always necessary to create a <a class="reference external" href="../getting-started/modules.html">Module</a> since the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a> will recursively try to satisfy <cite>&#64;Inject</cite>-annotated constructors for a requested type from the object graph, instantiating each constructor argument, all the way back to something with a no-arg constructor.</p>
-<p class="last"><a class="reference external" href="../getting-started/modules.html">Modules</a> are only necessary to help the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a> instantiate types that it cannot otherwise instantiate on its own. With the most common case being needing to instantiate instances of code that require external configuration via <a class="reference external" href="../getting-started/flags.html">Flags</a>.</p>
+<p><a class="reference external" href="../getting-started/modules.html">Modules</a> are only necessary to help the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a> instantiate types that it cannot otherwise instantiate on its own. With the most common case being needing to instantiate instances of code that require external configuration via <a class="reference external" href="../getting-started/flags.html">Flags</a>.</p>
 </div>
 <p>Your container’s list of <a class="reference external" href="../getting-started/modules.html">modules</a> should be <a class="reference external" href="../getting-started/modules.html#module-configuration-in-servers">defined</a> statically such that they can be used to create the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a> at the appropriate point in the container <a class="reference external" href="../getting-started/lifecycle.html">lifecycle</a>. <a class="reference external" href="../getting-started/dependency_injection.html">Dependency injection</a> provides best-practice mechanisms (like using <a class="reference external" href="../testing/override_modules.html">override modules</a> or the <a class="reference external" href="../testing/bind_dsl.html">#bind[T] DSL</a> in testing) which can be used to swap out implementations of types in the object graph such that you <strong>should not have a situation where you need to define a different list of modules in the production code based on a conditional</strong>.</p>
 <p>It is an anti-pattern if your are chaging the list of modules based on some conditional – <em>especially, if the conditional is defined by external configuration</em>.</p>
 <p>Lastly, your logic can then request instances of types from the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a> or via <a class="reference external" href="../dependency_injection.html#use-constructor-injection">constructor injection</a>. The goal of <a class="reference external" href="../dependency_injection.html#dependency-injection-best-practices">using dependency injection</a> is to make it easier to <a class="reference external" href="./index.html#testing">write robust tests</a> for your container.</p>
 <p>More information and details are provided in the following sections.</p>
-</div>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -126,7 +127,7 @@
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

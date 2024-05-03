@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Working with Mocks &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Working with Mocks &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="mixins.html" title="Test Mixins"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Working with Mocks</a></li> 
       </ul>
     </div>  
 
@@ -59,14 +59,14 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="working-with-mocks">
+  <section id="working-with-mocks">
 <span id="mocks"></span><h1>Working with Mocks<a class="headerlink" href="#working-with-mocks" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="mockito">
+<section id="mockito">
 <h2><a class="reference external" href="https://site.mockito.org/">Mockito</a><a class="headerlink" href="#mockito" title="Permalink to this headline">¶</a></h2>
 <p>Finatra recommends and integrates with the excellent <a class="reference external" href="https://site.mockito.org/">Mockito</a> Java mocking framework. As mentioned in the main <a class="reference external" href="./index.html#scalatest">Testing</a> section, it is recommended that Scala users use the <a class="reference external" href="https://www.scalatest.org/">ScalaTest</a>
 testing framework, however it is also recommended that users prefer <a class="reference external" href="https://github.com/mockito/mockito-scala">Mockito Scala</a> for <a class="reference external" href="https://site.mockito.org/">Mockito</a> mocking in Scala over the <a class="reference external" href="https://www.scalatest.org/user_guide/testing_with_mock_objects#mockito">ScalaTest MockitoSugar</a> utility (which provides only basic syntax sugar for <a class="reference external" href="https://site.mockito.org/">Mockito</a>).</p>
-</div>
-<div class="section" id="c-t-util-mock-mockito">
+</section>
+<section id="c-t-util-mock-mockito">
 <h2><a class="reference external" href="https://github.com/twitter/util/blob/develop/util-mock/src/main/scala/com/twitter/util/mock/Mockito.scala"><cite>c.t.util.mock.Mockito</cite></a><a class="headerlink" href="#c-t-util-mock-mockito" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/twitter/util/blob/develop/util-mock/src/main/scala/com/twitter/util/mock/Mockito.scala"><cite>c.t.util.mock.Mockito</cite></a> provides a <a class="reference external" href="https://github.com/mockito/mockito-scala">Mockito Scala</a> integration for Scala users of the framework. Java
 users are encouraged to use <a class="reference external" href="https://site.mockito.org/">Mockito</a> directly. The <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-mock/src/main/scala/com/twitter/util/mock/Mockito.scala"><cite>c.t.util.mock.Mockito</cite></a> will work as a full
@@ -77,12 +77,12 @@ which is heavily influenced by ScalaTest Matchers and provides a mocking DSL sim
 <a class="reference external" href="https://etorreborre.github.io/specs2/guide/SPECS2-3.4/org.specs2.guide.UseMockito.html">Specs2 Mockito</a>
 integration.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Usage of the <a class="reference external" href="https://github.com/mockito/mockito-scala">Mockito Scala</a> integration via <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-mock/src/main/scala/com/twitter/util/mock/Mockito.scala"><cite>c.t.util.mock.Mockito</cite></a> is optional. Users are free to
+<p class="admonition-title">Note</p>
+<p>Usage of the <a class="reference external" href="https://github.com/mockito/mockito-scala">Mockito Scala</a> integration via <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-mock/src/main/scala/com/twitter/util/mock/Mockito.scala"><cite>c.t.util.mock.Mockito</cite></a> is optional. Users are free to
 choose <a class="reference external" href="https://www.scalatest.org/">ScalaTest</a> <a class="reference external" href="http://doc.scalatest.org/3.0.8/org/scalatestplus/mockito/MockitoSugar.html">MockitoSugar</a> or another mocking library entirely for use in writing tests.</p>
 </div>
-</div>
-<div class="section" id="using-mocks">
+</section>
+<section id="using-mocks">
 <h2>Using Mocks<a class="headerlink" href="#using-mocks" title="Permalink to this headline">¶</a></h2>
 <p>When working with mocks it is <strong>strongly recommended</strong> that users choose to use <a class="reference external" href="bind_dsl.html">Explicit Binding with #bind[T]</a>
 to bind mocks to the object graph of a server or application under test. It is preferable to retain
@@ -91,27 +91,27 @@ control over the lifecycle of a mock within a given test rather than binding a m
 <a class="reference external" href="bind_dsl.html">#bind[T]</a> DSL allows for the test to retain control of the mock in order to
 expect or if necessary, reset, behavior.</p>
 <p>To use, first add a dependency on <cite>util/util-mock</cite> and then mix in the <cite>c.t.util.mock.Mockito</cite> trait to your test. E.g.,</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.finatra.http.EmbeddedHttpServer</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.server.FeatureTest</span>
-<span class="k">import</span> <span class="nn">com.twitter.util.mock.Mockito</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">EmbeddedHttpServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">FeatureTest</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">mock</span><span class="p">.</span><span class="nc">Mockito</span>
 
 <span class="k">class</span> <span class="nc">ExampleFeatureTest</span>
   <span class="k">extends</span> <span class="nc">FeatureTest</span>
-  <span class="k">with</span> <span class="nc">Mockito</span> <span class="o">{</span>
+  <span class="k">with</span> <span class="nc">Mockito</span> <span class="p">{</span>
 
-  <span class="k">private</span> <span class="k">val</span> <span class="n">mockDownstreamServiceClient</span> <span class="k">=</span> <span class="n">mock</span><span class="o">[</span><span class="kt">DownstreamServiceClient</span><span class="o">]</span>
-  <span class="k">private</span> <span class="k">val</span> <span class="n">mockIdService</span> <span class="k">=</span> <span class="n">mock</span><span class="o">[</span><span class="kt">IdService</span><span class="o">]</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="n">mockDownstreamServiceClient</span> <span class="o">=</span> <span class="n">mock</span><span class="p">[</span><span class="nc">DownstreamServiceClient</span><span class="p">]</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="n">mockIdService</span> <span class="o">=</span> <span class="n">mock</span><span class="p">[</span><span class="nc">IdService</span><span class="p">]</span>
 
-  <span class="k">override</span> <span class="k">val</span> <span class="n">server</span> <span class="k">=</span>
-    <span class="k">new</span> <span class="nc">EmbeddedHttpServer</span><span class="o">(</span><span class="k">new</span> <span class="nc">ExampleServer</span><span class="o">)</span>
-    <span class="o">.</span><span class="n">bind</span><span class="o">[</span><span class="kt">DownstreamServiceClient</span><span class="o">].</span><span class="n">toInstance</span><span class="o">(</span><span class="n">mockDownstreamServiceClient</span><span class="o">)</span>
-    <span class="o">.</span><span class="n">bind</span><span class="o">[</span><span class="kt">IdService</span><span class="o">].</span><span class="n">toInstance</span><span class="o">(</span><span class="n">mockIdService</span><span class="o">)</span>
+  <span class="k">override</span> <span class="kd">val</span> <span class="n">server</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">EmbeddedHttpServer</span><span class="p">(</span><span class="k">new</span> <span class="nc">ExampleServer</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">bind</span><span class="p">[</span><span class="nc">DownstreamServiceClient</span><span class="p">].</span><span class="n">toInstance</span><span class="p">(</span><span class="n">mockDownstreamServiceClient</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">bind</span><span class="p">[</span><span class="nc">IdService</span><span class="p">].</span><span class="n">toInstance</span><span class="p">(</span><span class="n">mockIdService</span><span class="p">)</span>
 
-  <span class="n">test</span><span class="o">(</span><span class="s">&quot;service test&quot;</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">test</span><span class="p">(</span><span class="s">&quot;service test&quot;</span><span class="p">)</span> <span class="p">{</span>
     <span class="cm">/* Mock GET Request performed by DownstreamServiceClient */</span>
-    <span class="n">mockDownstreamServiceClient</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;/tweets/123.json&quot;</span><span class="o">)(</span><span class="n">manifest</span><span class="o">[</span><span class="kt">FooResponse</span><span class="o">])</span> <span class="n">returns</span> <span class="nc">Future</span><span class="o">(</span><span class="nc">None</span><span class="o">)</span>
-    <span class="o">...</span>
-  <span class="o">}</span>
+    <span class="n">mockDownstreamServiceClient</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/tweets/123.json&quot;</span><span class="p">)(</span><span class="n">manifest</span><span class="p">[</span><span class="nc">FooResponse</span><span class="p">])</span> <span class="n">returns</span> <span class="nc">Future</span><span class="p">(</span><span class="nc">None</span><span class="p">)</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
 </pre></div>
 </div>
 <p>You can then bind the mocked instance to the object graph of the server or application under test
@@ -119,48 +119,48 @@ using the <a class="reference external" href="bind_dsl.html">#bind[T]</a> DSL an
 necessary.</p>
 <p>This is preferable over creating a <a class="reference external" href="../getting-started/modules.html">Module</a> then binding the
 mock to the object graph in the module, e.g.,</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.inject.TwitterModule</span>
-<span class="k">import</span> <span class="nn">com.twitter.util.mock.Mockito</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">TwitterModule</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">mock</span><span class="p">.</span><span class="nc">Mockito</span>
 
 <span class="c1">// NOT RECOMMENDED</span>
-<span class="k">object</span> <span class="nc">MyTestModule</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="k">with</span> <span class="nc">Mockito</span> <span class="o">{</span>
-  <span class="k">override</span> <span class="k">def</span> <span class="n">configure</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="k">val</span> <span class="n">mockFoo</span> <span class="k">=</span> <span class="n">mock</span><span class="o">[</span><span class="kt">Foo</span><span class="o">]</span>
-    <span class="n">mockFoo</span><span class="o">.</span><span class="n">doSomething</span> <span class="n">returns</span> <span class="s">&quot;Hello, world!&quot;</span>
+<span class="k">object</span> <span class="nc">MyTestModule</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="k">with</span> <span class="nc">Mockito</span> <span class="p">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">configure</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="n">mockFoo</span> <span class="o">=</span> <span class="n">mock</span><span class="p">[</span><span class="nc">Foo</span><span class="p">]</span>
+    <span class="n">mockFoo</span><span class="p">.</span><span class="n">doSomething</span> <span class="n">returns</span> <span class="s">&quot;Hello, world!&quot;</span>
 
-    <span class="n">bind</span><span class="o">[</span><span class="kt">Foo</span><span class="o">].</span><span class="n">toInstance</span><span class="o">(</span><span class="n">mockFoo</span><span class="o">)</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+    <span class="n">bind</span><span class="p">[</span><span class="nc">Foo</span><span class="p">].</span><span class="n">toInstance</span><span class="p">(</span><span class="n">mockFoo</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>In the above example, the user of the module has no access to the mock object to be able to expect
 behavior of the mock (this is in essence a <a class="reference external" href="https://martinfowler.com/articles/mocksArentStubs.html#TheDifferenceBetweenMocksAndStubs">stub</a> and you may very well find this useful).</p>
 <p>You could change the code to instead expose passing of the mock object into the module,</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.inject.TwitterModule</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">TwitterModule</span>
 
-<span class="k">class</span> <span class="nc">MyTestModule</span><span class="o">(</span><span class="n">foo</span><span class="k">:</span> <span class="kt">Foo</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="o">{</span>
-  <span class="k">override</span> <span class="k">def</span> <span class="n">configure</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="n">bind</span><span class="o">[</span><span class="kt">Foo</span><span class="o">].</span><span class="n">toInstance</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+<span class="k">class</span> <span class="nc">MyTestModule</span><span class="p">(</span><span class="n">foo</span><span class="p">:</span> <span class="nc">Foo</span><span class="p">)</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="p">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">configure</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">bind</span><span class="p">[</span><span class="nc">Foo</span><span class="p">].</span><span class="n">toInstance</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>This would then allow a test to create the mock and retain control to be able to expect behavior.
 But at this point, the module does not provide much utility as this behavior can be more concisely
 done via the <a class="reference external" href="bind_dsl.html">#bind[T]</a> DSL.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you are trying to create reusable functionality and there is some ceremony that needs to be
+<p class="admonition-title">Note</p>
+<p>If you are trying to create reusable functionality and there is some ceremony that needs to be
 done on the mock and want to encapsulate the ceremony, then the above is a viable path. In practice,
 we’ve found this case to be rare and thus generally recommend using the <a class="reference external" href="bind_dsl.html">#bind[T]</a> DSL
 inside of a test when mocking.</p>
 </div>
-</div>
-<div class="section" id="resetting-mocks">
+</section>
+<section id="resetting-mocks">
 <h2>Resetting Mocks<a class="headerlink" href="#resetting-mocks" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Note that the <a class="reference external" href="https://site.mockito.org/">Mockito</a> documentation <a class="reference external" href="https://github.com/mockito/mockito/wiki/FAQ#can-i-reset-a-mock">frowns upon needing to reset
+<p class="admonition-title">Warning</p>
+<p>Note that the <a class="reference external" href="https://site.mockito.org/">Mockito</a> documentation <a class="reference external" href="https://github.com/mockito/mockito/wiki/FAQ#can-i-reset-a-mock">frowns upon needing to reset
 mocks in a test</a> and in most
 cases when testing a stateless service or application it is not expected that you would need to
 reset a mocked instance between test cases.</p>
@@ -175,81 +175,82 @@ and using stat assertions.</p>
 if using Scala or similar functionality with an <cite>&#64;After</cite> annotated method in JUnit if using Java.
 The Finatra framework mixes in the ScalaTest <a class="reference external" href="http://doc.scalatest.org/3.1.2/org/scalatest/BeforeAndAfterEach.html">BeforeAndAfterEach</a>
 trait, thus the ScalaTest <cite>afterEach()</cite> function is available to override. E.g.,</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.finatra.http.EmbeddedHttpServer</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.server.FeatureTest</span>
-<span class="k">import</span> <span class="nn">com.twitter.util.mock.Mockito</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">EmbeddedHttpServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">FeatureTest</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">mock</span><span class="p">.</span><span class="nc">Mockito</span>
 
 <span class="k">class</span> <span class="nc">ExampleFeatureTest</span>
   <span class="k">extends</span> <span class="nc">FeatureTest</span>
-  <span class="k">with</span> <span class="nc">Mockito</span> <span class="o">{</span>
+  <span class="k">with</span> <span class="nc">Mockito</span> <span class="p">{</span>
 
-  <span class="k">private</span> <span class="k">val</span> <span class="n">mockDownstreamServiceClient</span> <span class="k">=</span> <span class="n">mock</span><span class="o">[</span><span class="kt">DownstreamServiceClient</span><span class="o">]</span>
-  <span class="k">private</span> <span class="k">val</span> <span class="n">mockIdService</span> <span class="k">=</span> <span class="n">mock</span><span class="o">[</span><span class="kt">IdService</span><span class="o">]</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="n">mockDownstreamServiceClient</span> <span class="o">=</span> <span class="n">mock</span><span class="p">[</span><span class="nc">DownstreamServiceClient</span><span class="p">]</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="n">mockIdService</span> <span class="o">=</span> <span class="n">mock</span><span class="p">[</span><span class="nc">IdService</span><span class="p">]</span>
 
-  <span class="k">override</span> <span class="k">val</span> <span class="n">server</span> <span class="k">=</span>
-    <span class="k">new</span> <span class="nc">EmbeddedHttpServer</span><span class="o">(</span><span class="k">new</span> <span class="nc">ExampleServer</span><span class="o">)</span>
-    <span class="o">.</span><span class="n">bind</span><span class="o">[</span><span class="kt">DownstreamServiceClient</span><span class="o">].</span><span class="n">toInstance</span><span class="o">(</span><span class="n">mockDownstreamServiceClient</span><span class="o">)</span>
-    <span class="o">.</span><span class="n">bind</span><span class="o">[</span><span class="kt">IdService</span><span class="o">].</span><span class="n">toInstance</span><span class="o">(</span><span class="n">mockIdService</span><span class="o">)</span>
+  <span class="k">override</span> <span class="kd">val</span> <span class="n">server</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nc">EmbeddedHttpServer</span><span class="p">(</span><span class="k">new</span> <span class="nc">ExampleServer</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">bind</span><span class="p">[</span><span class="nc">DownstreamServiceClient</span><span class="p">].</span><span class="n">toInstance</span><span class="p">(</span><span class="n">mockDownstreamServiceClient</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">bind</span><span class="p">[</span><span class="nc">IdService</span><span class="p">].</span><span class="n">toInstance</span><span class="p">(</span><span class="n">mockIdService</span><span class="p">)</span>
 
-  <span class="k">override</span> <span class="n">afterEach</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="n">afterEach</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1">// c.t.util.mock.Mockito provides a `reset(mocks*)` function</span>
-    <span class="n">reset</span><span class="o">(</span><span class="n">mockDownstreamServiceClient</span><span class="o">,</span> <span class="n">mockIdService</span><span class="o">)</span>
-  <span class="o">}</span>
+    <span class="n">reset</span><span class="p">(</span><span class="n">mockDownstreamServiceClient</span><span class="p">,</span> <span class="n">mockIdService</span><span class="p">)</span>
+  <span class="p">}</span>
 
-  <span class="n">test</span><span class="o">(</span><span class="s">&quot;service test&quot;</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">test</span><span class="p">(</span><span class="s">&quot;service test&quot;</span><span class="p">)</span> <span class="p">{</span>
     <span class="cm">/* Mock GET Request performed by DownstreamServiceClient */</span>
-    <span class="n">mockDownstreamServiceClient</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;/tweets/123.json&quot;</span><span class="o">)(</span><span class="n">manifest</span><span class="o">[</span><span class="kt">FooResponse</span><span class="o">])</span> <span class="n">returns</span> <span class="nc">Future</span><span class="o">(</span><span class="nc">None</span><span class="o">)</span>
-    <span class="o">...</span>
-  <span class="o">}</span>
+    <span class="n">mockDownstreamServiceClient</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/tweets/123.json&quot;</span><span class="p">)(</span><span class="n">manifest</span><span class="p">[</span><span class="nc">FooResponse</span><span class="p">])</span> <span class="n">returns</span> <span class="nc">Future</span><span class="p">(</span><span class="nc">None</span><span class="p">)</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
 </pre></div>
 </div>
 <p>This will <a class="reference external" href="https://javadoc.io/static/org.mockito/mockito-core/3.3.3/org/mockito/Mockito.html#resetting_mocks">reset</a>
 the mocks passed to the <cite>c.t.util.mock.Mockito.reset</cite> function <em>after</em> each test case has been run.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In some cases you may want to reset a mock <strong>before</strong> each test case (because you do some pre-work
+<p class="admonition-title">Note</p>
+<p>In some cases you may want to reset a mock <strong>before</strong> each test case (because you do some pre-work
 with the mock in the constructor of the Test class). While it is generally more common to reset
 mocks <strong>after</strong> each test case, you an always do something similar before each test case by overriding
 the <cite>beforeEach()</cite> ScalaTest method or use an <cite>&#64;Before</cite> annotated method with JUnit.</p>
 </div>
-</div>
-<div class="section" id="with-mockitoscala">
+</section>
+<section id="with-mockitoscala">
 <h2>With <a class="reference external" href="https://github.com/mockito/mockito-scala">Mockito Scala</a><a class="headerlink" href="#with-mockitoscala" title="Permalink to this headline">¶</a></h2>
 <p>Resetting mocks <em>after</em> each test is generally considered to be the preferred manner such
 that <a class="reference external" href="https://github.com/mockito/mockito-scala">Mockito Scala</a> provides specific ScalaTest helper <a class="reference external" href="https://github.com/mockito/mockito-scala#orgmockitointegrationsscalatestresetmocksaftereachtest--orgmockitointegrationsscalatestresetmocksaftereachasynctest">traits</a>
 to do so. Note that as documented, you should use the <cite>org.mockito.scalatest</cite> versions from <a class="reference external" href="https://search.maven.org/artifact/org.mockito/mockito-scala-scalatest_2.12">mockito-scala-scalatest</a>:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference external" href="https://github.com/mockito/mockito-scala/blob/release/1.x/scalatest/src/main/scala/org/mockito/scalatest/ResetMocksAfterEachTest.scala">org.mockito.scalatest.ResetMocksAfterEachTest</a></li>
-<li><a class="reference external" href="https://github.com/mockito/mockito-scala/blob/release/1.x/scalatest/src/main/scala/org/mockito/scalatest/ResetMocksAfterEachAsyncTest.scala">org.mockito.scalatest.ResetMocksAfterEachAsyncTest</a></li>
+<li><p><a class="reference external" href="https://github.com/mockito/mockito-scala/blob/release/1.x/scalatest/src/main/scala/org/mockito/scalatest/ResetMocksAfterEachTest.scala">org.mockito.scalatest.ResetMocksAfterEachTest</a></p></li>
+<li><p><a class="reference external" href="https://github.com/mockito/mockito-scala/blob/release/1.x/scalatest/src/main/scala/org/mockito/scalatest/ResetMocksAfterEachAsyncTest.scala">org.mockito.scalatest.ResetMocksAfterEachAsyncTest</a></p></li>
 </ul>
 </div></blockquote>
 <p>These traits will reset any mock instance created within the test, e.g., <cite>val f = mock[Foo]</cite> within a ScalaTest <cite>afterEach()</cite>. Any mock created differently, e.g., <cite>val f = MockitoSugar.mock[Foo]</cite> will not be reset since only the currently scoped <cite>mock</cite> methods are augmented to collect the mock instances for resetting.</p>
-</div>
-<div class="section" id="further-reading">
+</section>
+<section id="further-reading">
 <h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
 <p>More resources on <a class="reference external" href="http://xunitpatterns.com/Test%20Double.html">test doubles</a>:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://martinfowler.com/articles/mocksArentStubs.html">Mocks Aren’t Stubs</a></li>
-<li><a class="reference external" href="https://blog.pragmatists.com/test-doubles-fakes-mocks-and-stubs-1a7491dfa3da">Test Doubles — Fakes, Mocks and Stubs.</a></li>
+<li><p><a class="reference external" href="https://martinfowler.com/articles/mocksArentStubs.html">Mocks Aren’t Stubs</a></p></li>
+<li><p><a class="reference external" href="https://blog.pragmatists.com/test-doubles-fakes-mocks-and-stubs-1a7491dfa3da">Test Doubles — Fakes, Mocks and Stubs.</a></p></li>
 </ul>
-</div>
-<div class="section" id="more-information">
+</section>
+<section id="more-information">
 <h2>More Information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="index.html"><span class="doc">Testing Features</span></a></li>
-<li><a class="reference internal" href="embedded.html"><span class="doc">Embedded Servers and Apps</span></a></li>
-<li><a class="reference internal" href="feature_tests.html"><span class="doc">Feature Tests</span></a></li>
-<li><a class="reference internal" href="integration_tests.html"><span class="doc">Integration Tests</span></a></li>
-<li><a class="reference internal" href="startup_tests.html"><span class="doc">Startup Tests</span></a></li>
-<li><a class="reference internal" href="mixins.html"><span class="doc">Test Mixins</span></a></li>
-<li><a class="reference internal" href="override_modules.html"><span class="doc">Override Modules</span></a></li>
-<li><a class="reference internal" href="bind_dsl.html"><span class="doc">Explicit Binding with #bind[T]</span></a></li>
+<li><p><a class="reference internal" href="index.html"><span class="doc">Testing Features</span></a></p></li>
+<li><p><a class="reference internal" href="embedded.html"><span class="doc">Embedded Servers and Apps</span></a></p></li>
+<li><p><a class="reference internal" href="feature_tests.html"><span class="doc">Feature Tests</span></a></p></li>
+<li><p><a class="reference internal" href="integration_tests.html"><span class="doc">Integration Tests</span></a></p></li>
+<li><p><a class="reference internal" href="startup_tests.html"><span class="doc">Startup Tests</span></a></p></li>
+<li><p><a class="reference internal" href="mixins.html"><span class="doc">Test Mixins</span></a></p></li>
+<li><p><a class="reference internal" href="override_modules.html"><span class="doc">Override Modules</span></a></p></li>
+<li><p><a class="reference internal" href="bind_dsl.html"><span class="doc">Explicit Binding with #bind[T]</span></a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -312,7 +313,7 @@ to do so. Note that as documented, you should use the <cite>org.mockito.scalates
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Example Projects &#8212; Finatra 24.2.0 documentation</title>
+    <title>TwitterServer v. App Comparison &#8212; Finatra 24.2.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -16,8 +16,6 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Introduction to Logging With Finatra" href="../logging/index.html" />
-    <link rel="prev" title="Future Gotchas" href="futures.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -42,15 +40,8 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../logging/index.html" title="Introduction to Logging With Finatra"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="futures.html" title="Future Gotchas"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Example Projects</a></li> 
+        <li class="nav-item nav-item-this"><a href="">TwitterServer v. App Comparison</a></li> 
       </ul>
     </div>  
 
@@ -59,33 +50,67 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="example-projects">
-<span id="examples"></span><h1>Example Projects<a class="headerlink" href="#example-projects" title="Permalink to this headline">¶</a></h1>
-<p>Finatra includes a <a class="reference external" href="https://github.com/twitter/finatra/tree/develop/examples">collection of example applications and servers</a>.</p>
-<section id="details">
-<h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
-<p>For detailed information see the README.md within each example project. Every project builds with <a class="reference external" href="https://www.scala-sbt.org/">sbt</a> and at
-least one example also uses <a class="reference external" href="https://maven.apache.org">Maven</a>.</p>
-</section>
-<section id="building-and-running">
-<h2>Building and Running<a class="headerlink" href="#building-and-running" title="Permalink to this headline">¶</a></h2>
-<section id="develop-branch">
-<h3><cite>develop</cite> branch<a class="headerlink" href="#develop-branch" title="Permalink to this headline">¶</a></h3>
-<p>If you want to build or run the examples from the <cite>develop</cite> branch (or a branch created from the <cite>develop</cite> branch) you will need to make sure to follow the instructions in the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/CONTRIBUTING.md">CONTRIBUTING.md</a> documentation for building SNAPSHOT versions of the necessary Twitter OSS dependencies along with building Finatra itself.</p>
-<p>You can use the <a class="reference external" href="https://github.com/twitter/dodo">Dodo</a> project builder to accomplish this easily:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -s https://raw.githubusercontent.com/twitter/dodo/develop/bin/build <span class="p">|</span> bash -s -- --no-test --include finatra
-</pre></div>
-</div>
-<p>This commands differs from the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/CONTRIBUTING.md">CONTRIBUTING.md</a> documentation in that it will also <em>include</em> building and publishing Finatra locally from the Finatra <cite>develop</cite> branch.</p>
-</section>
-<section id="master-or-a-release-branch">
-<h3><cite>master</cite> or a release branch<a class="headerlink" href="#master-or-a-release-branch" title="Permalink to this headline">¶</a></h3>
-<p>Follow the instructions in the project’s <cite>README.md</cite> for how to build or run the code.</p>
-</section>
-</section>
-<section id="more-information">
-<h2>More information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h2>
-<p>For more information please feel free to browse the examples <a class="reference external" href="https://github.com/twitter/finatra/tree/develop/examples">source code</a> (tests are an especially good source of information and examples).</p>
+  <section id="twitterserver-v-app-comparison">
+<span id="comparison"></span><h1>TwitterServer v. App Comparison<a class="headerlink" href="#twitterserver-v-app-comparison" title="Permalink to this headline">¶</a></h1>
+<section id="general-guideline">
+<h2>General Guideline<a class="headerlink" href="#general-guideline" title="Permalink to this headline">¶</a></h2>
+<p>Choose an injectable <code class="docutils literal notranslate"><span class="pre">c.t.inject.app.App</span></code> for short-lived processes. The App runs for a few minutes
+or a few hours. Apps can make requests over the network to clients. However, they do not expose and
+bind to a port to serve external traffic. The health of the App does not need to be monitored closely.
+To collect metrics from an App, users must explicitly write metrics to a file storage
+or push them before the app shuts down. For example, cron CI jobs, command line utilities.</p>
+<p>TwitterServer is <a class="reference external" href="./framework.html">an extension of App</a>, so it has every App feature and
+some additional features. If you need to serve external traffic, use a TwitterServer. The
+TwitterServer <a class="reference external" href="https://twitter.github.io/twitter-server/Admin.html">HTTP admin page</a> provides
+utilities to monitor the server health, debug performance issues, and exposes an HTTP endpoint
+for metrics collection. Create a <code class="docutils literal notranslate"><span class="pre">c.t.server.TwitterServer</span></code> for long-lived servers.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 35%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>Feature</p></th>
+<th class="head"><p>TwitterServer</p></th>
+<th class="head"><p>App</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>Purpose</p></th>
+<td><p>Servers that continuously serve requests</p></td>
+<td><p>Jobs that start up, do some work, and then shut down. Command line utilities.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Duration</p></th>
+<td><p>Long-lived</p></td>
+<td><p>Short-lived</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Exporting Metrics</p></th>
+<td><p>Exposes metrics from TwitterServer HTTP admin endpoint. An external polling system can collect the metrics at regular time intervals (e.g. every minute).</p></td>
+<td><p>Users need to set up exporting metrics before the App shuts down. Metrics can be pushed to a remote storage system or written to disk.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Bind and expose port to serve external traffic</p></th>
+<td><p>Yes ✅</p></td>
+<td><p>No ❌</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p><a class="reference external" href="lifecycle.html#c-t-server-twitterserver-lifecycle">Warmup Lifecycle Phase Before Starting to Serving Traffic</a></p></th>
+<td><p>Yes ✅ <cite>prebindWarmup</cite> and <cite>warmupComplete</cite></p></td>
+<td><p>No ❌</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Flags</p></th>
+<td><p>Yes ✅</p></td>
+<td><p>Yes ✅</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Modules</p></th>
+<td><p>Yes ✅</p></td>
+<td><p>Yes ✅</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>TwitterServer HTTP Admin page (metrics, dynamic log level change page)</p></th>
+<td><p>Yes ✅</p></td>
+<td><p>No ❌</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
@@ -111,24 +136,14 @@ least one example also uses <a class="reference external" href="https://maven.ap
 </ul>
   <h3><a href="../../index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Example Projects</a><ul>
-<li><a class="reference internal" href="#details">Details</a></li>
-<li><a class="reference internal" href="#building-and-running">Building and Running</a><ul>
-<li><a class="reference internal" href="#develop-branch"><cite>develop</cite> branch</a></li>
-<li><a class="reference internal" href="#master-or-a-release-branch"><cite>master</cite> or a release branch</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#more-information">More information</a></li>
+<li><a class="reference internal" href="#">TwitterServer v. App Comparison</a><ul>
+<li><a class="reference internal" href="#general-guideline">General Guideline</a></li>
 </ul>
 </li>
 </ul>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">User’s Guide</a><ul>
-      <li>Previous: <a href="futures.html" title="previous chapter">Future Gotchas</a></li>
-      <li>Next: <a href="../logging/index.html" title="next chapter">Introduction to Logging With Finatra</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 <div id="searchbox" style="display: none">

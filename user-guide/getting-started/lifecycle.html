@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Application and Server Lifecycle &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Application and Server Lifecycle &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="twitter_server.html" title="TwitterServer Basics"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Application and Server Lifecycle</a></li> 
       </ul>
     </div>  
 
@@ -59,134 +59,139 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="application-and-server-lifecycle">
+  <section id="application-and-server-lifecycle">
 <span id="lifecycle"></span><h1>Application and Server Lifecycle<a class="headerlink" href="#application-and-server-lifecycle" title="Permalink to this headline">¶</a></h1>
 <p>Finatra establishes an ordered lifecycle when creating a <a class="reference external" href="https://twitter.github.io/util/docs/com/twitter/app/App.html">c.t.app.App</a> or
 a <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala">c.t.server.TwitterServer</a>
 and provides methods which can be implemented for running or starting core logic.</p>
 <p>This is done for several reasons:</p>
 <ul class="simple">
-<li>To ensure that <a class="reference external" href="./flags.html">flag</a> parsing and <a class="reference external" href="./modules.html">module</a> installation to
+<li><p>To ensure that <a class="reference external" href="./flags.html">flag</a> parsing and <a class="reference external" href="./modules.html">module</a> installation to
 build the object graph is done in the correct order such that the injector is properly configured
-before a user attempts attempts to access flags.</li>
-<li>Ensure that object promotion and garbage collection is properly handled <em>before</em> accepting traffic
-to a server.</li>
-<li>Expose any external interface <em>before</em> reporting a server is “healthy”. Otherwise a server may
+before a user attempts attempts to access flags.</p></li>
+<li><p>Ensure that object promotion and garbage collection is properly handled <em>before</em> accepting traffic
+to a server.</p></li>
+<li><p>Expose any external interface <em>before</em> reporting a server is “healthy”. Otherwise a server may
 report it is healthy before binding to a port — which may fail. Depending on how monitoring is
 configured (typically done by monitoring the <a class="reference external" href="https://twitter.github.io/twitter-server/Features.html#admin-http-interface">HTTP Admin Interface</a>
 <a class="reference external" href="https://twitter.github.io/twitter-server/Features.html#lifecycle-management">/health</a> endpoint
 on some frequency) it could be some interval before the server is recognized as unhealthy when in
-fact it did not start properly as it could not bind to a port.</li>
+fact it did not start properly as it could not bind to a port.</p></li>
 </ul>
 <p>Thus you do not have access to the <a class="reference external" href="https://github.com/twitter/util/blob/9fa550a269d2287b24e94921a352ba954f9f4bfb/util-app/src/main/scala/com/twitter/app/App.scala#L24">App</a>
 or <a class="reference external" href="https://github.com/twitter/twitter-server/blob/5fea9c2a6220ab9bbdb449c99c946e2aef322e7d/server/src/main/scala/com/twitter/server/TwitterServer.scala#L93">TwitterServer</a>
 <cite>main()</cite> method. Instead, any logic should be contained in overriding an <code class="docutils literal notranslate"><span class="pre">&#64;Lifecycle</span></code>-annotated
 method or in the application or server callbacks.</p>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">If you override an <code class="docutils literal notranslate"><span class="pre">&#64;Lifecycle</span></code>-annotated method you <strong>MUST</strong> first call
+<p class="admonition-title">Caution</p>
+<p>If you override an <code class="docutils literal notranslate"><span class="pre">&#64;Lifecycle</span></code>-annotated method you <strong>MUST</strong> first call
 <cite>super.lifecycleMethod()</cite> in your override to ensure that framework lifecycle events happen
 accordingly.</p>
 </div>
+<section id="choosing-between-twitterserver-and-app">
+<h2>Choosing between TwitterServer and App<a class="headerlink" href="#choosing-between-twitterserver-and-app" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="./comparison.html">TwitterServer v. App comparison chart</a> to decide
+between an App or TwitterServer.</p>
 <p>See the <a class="reference external" href="../app/index.html">Creating an injectable App</a> and
 <a class="reference external" href="../twitter-server/index.html">Creating an injectable TwitterServer</a> sections for more information.</p>
-<div class="section" id="c-t-app-app-lifecycle">
+</section>
+<section id="c-t-app-app-lifecycle">
 <h2><a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> Lifecycle<a class="headerlink" href="#c-t-app-app-lifecycle" title="Permalink to this headline">¶</a></h2>
 <p>Finatra servers are, at their base, <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> applications. Therefore it will help to first
 cover the <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> lifecycle.</p>
 <p>When writing a <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a>, you extend the <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> trait and place your application logic
 inside of a public <cite>main()</cite> method.</p>
-<div class="code Scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.app.App</span>
+<div class="highlight-Scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">app</span><span class="p">.</span><span class="nc">App</span>
 
-<span class="k">class</span> <span class="nc">MyApp</span> <span class="k">extends</span> <span class="nc">App</span> <span class="o">{</span>
-    <span class="k">val</span> <span class="n">n</span> <span class="k">=</span> <span class="n">flag</span><span class="o">(</span><span class="s">&quot;n&quot;</span><span class="o">,</span> <span class="mi">100</span><span class="o">,</span> <span class="s">&quot;Number of items to process&quot;</span><span class="o">)</span>
+<span class="k">class</span> <span class="nc">MyApp</span> <span class="k">extends</span> <span class="nc">App</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="n">n</span> <span class="o">=</span> <span class="n">flag</span><span class="p">(</span><span class="s">&quot;n&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s">&quot;Number of items to process&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="n">main</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-      <span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">n</span><span class="o">())</span> <span class="n">process</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">n</span><span class="p">())</span> <span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> provides ways to tie into it’s lifecycle by allowing the user to register logic for
 different lifecycle phases. E.g., to run logic in the <cite>init</cite> lifecycle phase, the user can call
 the <cite>init</cite> function passing a callback to run. <cite>App</cite> collects every call to the <cite>init</cite> function and
 will run the callbacks in the order added during the <cite>init</cite> lifecycle phase.</p>
-<div class="code Scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.app.App</span>
+<div class="highlight-Scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">app</span><span class="p">.</span><span class="nc">App</span>
 
-<span class="k">class</span> <span class="nc">MyApp</span> <span class="k">extends</span> <span class="nc">App</span> <span class="o">{</span>
+<span class="k">class</span> <span class="nc">MyApp</span> <span class="k">extends</span> <span class="nc">App</span> <span class="p">{</span>
 
-    <span class="n">init</span> <span class="o">{</span>
+    <span class="n">init</span> <span class="p">{</span>
         <span class="c1">// initialization logic</span>
-    <span class="o">}</span>
+    <span class="p">}</span>
 
-    <span class="n">premain</span> <span class="o">{</span>
+    <span class="n">premain</span> <span class="p">{</span>
         <span class="c1">// logic to run right before main()</span>
-    <span class="o">}</span>
+    <span class="p">}</span>
 
-    <span class="k">def</span> <span class="n">main</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
         <span class="c1">// your application logic here</span>
-    <span class="o">}</span>
+    <span class="p">}</span>
 
-    <span class="n">postmain</span> <span class="o">{</span>
+    <span class="n">postmain</span> <span class="p">{</span>
         <span class="c1">// logic to run right after main()</span>
-    <span class="o">}</span>
+    <span class="p">}</span>
 
-    <span class="n">onExit</span> <span class="o">{</span>
+    <span class="n">onExit</span> <span class="p">{</span>
         <span class="c1">// closing logic</span>
-    <span class="o">}</span>
+    <span class="p">}</span>
 
-    <span class="n">closeOnExitLast</span><span class="o">(</span><span class="nc">MyClosable</span><span class="o">)</span> <span class="c1">// final closing logic</span>
-<span class="o">}</span>
+    <span class="n">closeOnExitLast</span><span class="p">(</span><span class="nc">MyClosable</span><span class="p">)</span> <span class="c1">// final closing logic</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Additional hooks are <cite>premain</cite>, <cite>postmain</cite>, <cite>onExit</cite> and <cite>closeOnExitLast()</cite>, as shown above.</p>
 <p>The lifecycle could thus be represented:</p>
-<div class="code shell highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="nc">App</span><span class="k">#</span><span class="n">main</span><span class="o">()</span> <span class="o">--&gt;</span>
-<span class="nc">App</span><span class="k">#</span><span class="n">nonExitingMain</span><span class="o">()</span> <span class="o">--&gt;</span>
-    <span class="n">bind</span> <span class="nc">LoadService</span> <span class="n">bindings</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">init</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="nc">App</span><span class="k">#</span><span class="n">parseArgs</span><span class="o">()</span> <span class="c1">// read command line args into Flags</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">premain</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">defined</span> <span class="n">main</span><span class="o">()</span> <span class="n">methods</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">postmain</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="nc">App</span><span class="k">#</span><span class="n">close</span><span class="o">()</span> <span class="o">--&gt;</span>
-        <span class="n">run</span> <span class="n">all</span> <span class="n">onExit</span> <span class="o">{}</span> <span class="n">blocks</span>
-        <span class="n">run</span> <span class="n">all</span> <span class="nc">Closables</span> <span class="n">registered</span> <span class="n">via</span> <span class="n">closeOnExitLast</span><span class="o">()</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>App#main<span class="o">()</span> --&gt;
+App#nonExitingMain<span class="o">()</span> --&gt;
+    <span class="nb">bind</span> LoadService bindings
+    run all init <span class="o">{}</span> blocks
+    App#parseArgs<span class="o">()</span> // <span class="nb">read</span> <span class="nb">command</span> line args into Flags
+    run all premain <span class="o">{}</span> blocks
+    run all defined main<span class="o">()</span> methods
+    run all postmain <span class="o">{}</span> blocks
+    App#close<span class="o">()</span> --&gt;
+        run all onExit <span class="o">{}</span> blocks
+        run all Closables registered via closeOnExitLast<span class="o">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="c-t-inject-app-app-lifecycle">
+</section>
+<section id="c-t-inject-app-app-lifecycle">
 <h2><a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-app/src/main/scala/com/twitter/inject/app/App.scala"><cite>c.t.inject.app.App</cite></a> Lifecycle<a class="headerlink" href="#c-t-inject-app-app-lifecycle" title="Permalink to this headline">¶</a></h2>
 <p>The Finatra <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-app/src/main/scala/com/twitter/inject/app/App.scala"><cite>c.t.inject.app.App</cite></a> extends the <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> lifecycle by adding more structure to the
 defined <cite>main()</cite> method.</p>
 <p>The lifecycle for a Finatra “injectable” App <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-app/src/main/scala/com/twitter/inject/app/App.scala"><cite>c.t.inject.app.App</cite></a> can be described:</p>
-<div class="code shell highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="nc">App</span><span class="k">#</span><span class="n">main</span><span class="o">()</span> <span class="o">--&gt;</span>
-<span class="nc">App</span><span class="k">#</span><span class="n">nonExitingMain</span><span class="o">()</span> <span class="o">--&gt;</span>
-    <span class="n">bind</span> <span class="nc">LoadService</span> <span class="n">bindings</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">init</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="nc">App</span><span class="k">#</span><span class="n">parseArgs</span><span class="o">()</span> <span class="c1">// read command line args into Flags</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">premain</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="n">c</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">inject</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="nc">App</span><span class="k">#</span><span class="n">main</span><span class="o">()</span> <span class="o">--&gt;</span>
-        <span class="n">load</span><span class="o">/</span><span class="n">install</span> <span class="n">modules</span>
-        <span class="n">modules</span><span class="k">#</span><span class="n">postInjectorStartup</span><span class="o">()</span>
-        <span class="n">postInjectorStartup</span><span class="o">()</span>
-        <span class="n">warmup</span><span class="o">()</span>
-        <span class="n">beforePostWarmup</span><span class="o">()</span>
-        <span class="n">postWarmup</span><span class="o">()</span>
-        <span class="n">afterPostwarmup</span><span class="o">()</span>
-        <span class="n">modules</span><span class="k">#</span><span class="n">postWarmupComplete</span><span class="o">()</span>
-        <span class="n">register</span> <span class="n">application</span> <span class="n">started</span>
-        <span class="n">c</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">inject</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="nc">App</span><span class="k">#</span><span class="n">run</span><span class="o">()</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">postmain</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="nc">App</span><span class="k">#</span><span class="n">close</span><span class="o">()</span> <span class="o">--&gt;</span>
-        <span class="n">run</span> <span class="n">all</span> <span class="n">onExit</span> <span class="o">{}</span> <span class="n">blocks</span>
-        <span class="n">run</span> <span class="n">all</span> <span class="nc">Closables</span> <span class="n">registered</span> <span class="n">via</span> <span class="n">closeOnExitLast</span><span class="o">()</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>App#main<span class="o">()</span> --&gt;
+App#nonExitingMain<span class="o">()</span> --&gt;
+    <span class="nb">bind</span> LoadService bindings
+    run all init <span class="o">{}</span> blocks
+    App#parseArgs<span class="o">()</span> // <span class="nb">read</span> <span class="nb">command</span> line args into Flags
+    run all premain <span class="o">{}</span> blocks
+    c.t.inject.app.App#main<span class="o">()</span> --&gt;
+        load/install modules
+        modules#postInjectorStartup<span class="o">()</span>
+        postInjectorStartup<span class="o">()</span>
+        warmup<span class="o">()</span>
+        beforePostWarmup<span class="o">()</span>
+        postWarmup<span class="o">()</span>
+        afterPostwarmup<span class="o">()</span>
+        modules#postWarmupComplete<span class="o">()</span>
+        register application started
+        c.t.inject.app.App#run<span class="o">()</span>
+    run all postmain <span class="o">{}</span> blocks
+    App#close<span class="o">()</span> --&gt;
+        run all onExit <span class="o">{}</span> blocks
+        run all Closables registered via closeOnExitLast<span class="o">()</span>
 </pre></div>
 </div>
 <p>For more information on creating an “injectable” App with Finatra, see the documentation
 <a class="reference external" href="../app/index.html">here</a>.</p>
-</div>
-<div class="section" id="c-t-server-twitterserver-lifecycle">
+</section>
+<section id="c-t-server-twitterserver-lifecycle">
 <h2><a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a> Lifecycle<a class="headerlink" href="#c-t-server-twitterserver-lifecycle" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a> is an extension of <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> and thus inherits the <a class="reference external" href="#c-t-app-app-lifecycle">c.t.app.App lifecycle</a>,
 but adds the ability to include “warmup” lifecycle phases which are just a refinement of
@@ -202,8 +207,8 @@ GC pause <em>before</em> your server accepts any traffic).</p>
 accepting traffic. This is done by calling <cite>warmupComplete()</cite>.</p>
 <p>To add these phases, users would mix-in the <a class="reference external" href="https://github.com/twitter/twitter-server/blob/7d59c1bd46b2d96e4d0056f7860ca0344fe69247/server/src/main/scala/com/twitter/server/Lifecycle.scala#L85"><cite>c.t.server.Lifecycle.Warmup</cite></a> trait into their
 <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a> extension.</p>
-</div>
-<div class="section" id="c-t-inject-server-twitterserver-lifecycle">
+</section>
+<section id="c-t-inject-server-twitterserver-lifecycle">
 <h2><a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-server/src/main/scala/com/twitter/inject/server/TwitterServer.scala"><cite>c.t.inject.server.TwitterServer</cite></a> Lifecycle<a class="headerlink" href="#c-t-inject-server-twitterserver-lifecycle" title="Permalink to this headline">¶</a></h2>
 <p>Finatra defines an “injectable” TwitterServer, <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-server/src/main/scala/com/twitter/inject/server/TwitterServer.scala"><cite>c.t.inject.server.TwitterServer</cite></a> which itself is an
 extension of <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>c.t.server.TwitterServer</cite></a> and the Finatra “injectable” App, <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-app/src/main/scala/com/twitter/inject/app/App.scala"><cite>c.t.inject.app.App</cite></a>.</p>
@@ -212,7 +217,7 @@ extension of <a class="reference external" href="https://github.com/twitter/twit
 and further refines the warmup lifecycle as described in the next section.</p>
 <p>For more information on creating an “injectable” TwitterServer with Finatra, see the documentation
 <a class="reference external" href="../twitter-server/index.html">here</a>.</p>
-<div class="section" id="server-startup-lifecycle">
+<section id="server-startup-lifecycle">
 <h3>Server Startup Lifecycle<a class="headerlink" href="#server-startup-lifecycle" title="Permalink to this headline">¶</a></h3>
 <p>Finatra servers inherit the <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala"><cite>c.t.app.App</cite></a> lifecycle and, as mentioned, also mix-in the TwitterServer
 <a class="reference external" href="https://github.com/twitter/twitter-server/blob/7d59c1bd46b2d96e4d0056f7860ca0344fe69247/server/src/main/scala/com/twitter/server/Lifecycle.scala#L85"><cite>c.t.server.Lifecycle.Warmup</cite></a> trait. On top of that, Finatra further refines the lifecycle by adding
@@ -222,45 +227,45 @@ properly instantiated, all Twitter Util <a class="reference external" href="./fl
 interfaces are properly bound and the application is correctly started with minimal intervention
 needed on the part of the implementor.</p>
 <p>In text, at a high-level, the start-up lifecycle of a Finatra server looks like:</p>
-<div class="code shell highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="nc">App</span><span class="k">#</span><span class="n">main</span><span class="o">()</span> <span class="o">--&gt;</span>
-<span class="nc">App</span><span class="k">#</span><span class="n">nonExitingMain</span><span class="o">()</span> <span class="o">--&gt;</span>
-    <span class="n">bind</span> <span class="nc">LoadService</span> <span class="n">bindings</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">init</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="nc">App</span><span class="k">#</span><span class="n">parseArgs</span><span class="o">()</span> <span class="c1">// read command line args into Flags</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">premain</span> <span class="o">{}</span> <span class="n">blocks</span> <span class="o">--&gt;</span>
-        <span class="n">add</span> <span class="n">routes</span> <span class="n">to</span> <span class="nc">TwitterServer</span> <span class="nc">AdminHttpServer</span>
-        <span class="n">bind</span> <span class="n">interface</span> <span class="n">and</span> <span class="n">start</span> <span class="nc">TwitterServer</span> <span class="nc">AdminHttpServer</span>
-    <span class="n">c</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">inject</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="nc">TwitterServer</span><span class="k">#</span><span class="n">main</span><span class="o">()</span> <span class="o">--&gt;</span>
-        <span class="n">c</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">inject</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="nc">App</span><span class="k">#</span><span class="n">main</span><span class="o">()</span> <span class="o">--&gt;</span>
-            <span class="n">load</span><span class="o">/</span><span class="n">install</span> <span class="n">modules</span>
-            <span class="n">modules</span><span class="k">#</span><span class="n">postInjectorStartup</span><span class="o">()</span>
-            <span class="n">postInjectorStartup</span><span class="o">()</span> <span class="o">--&gt;</span>
-                <span class="n">resolve</span> <span class="n">finagle</span> <span class="n">clients</span>
-                <span class="n">setup</span><span class="o">()</span>
-            <span class="n">warmup</span><span class="o">()</span>
-            <span class="n">beforePostWarmup</span><span class="o">()</span> <span class="o">--&gt;</span>
-                <span class="nc">Lifecycle</span><span class="k">#</span><span class="n">prebindWarmup</span><span class="o">()</span>
-            <span class="n">postWarmup</span><span class="o">()</span> <span class="o">--&gt;</span>
-                <span class="n">announce</span> <span class="nc">TwitterServer</span> <span class="nc">AdminHttpServer</span> <span class="n">interface</span>
-                <span class="n">bind</span> <span class="n">external</span> <span class="n">interfaces</span>
-                <span class="n">announce</span> <span class="n">external</span> <span class="n">interfaces</span>
-            <span class="n">afterPostwarmup</span><span class="o">()</span> <span class="o">--&gt;</span>
-                <span class="nc">Lifecycle</span><span class="k">#</span><span class="n">warmupComplete</span><span class="o">()</span>
-            <span class="n">modules</span><span class="k">#</span><span class="n">postWarmupComplete</span><span class="o">()</span>
-            <span class="n">register</span> <span class="n">application</span> <span class="n">started</span>
-            <span class="n">c</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">inject</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="nc">App</span><span class="k">#</span><span class="n">run</span><span class="o">()</span> <span class="o">--&gt;</span>
-                <span class="n">c</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">inject</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="nc">TwitterServer</span><span class="k">#</span><span class="n">start</span><span class="o">()</span>
-        <span class="n">block</span> <span class="n">on</span> <span class="n">awaitables</span>
-    <span class="n">run</span> <span class="n">all</span> <span class="n">postmain</span> <span class="o">{}</span> <span class="n">blocks</span>
-    <span class="nc">App</span><span class="k">#</span><span class="n">close</span><span class="o">()</span> <span class="o">--&gt;</span>
-        <span class="n">run</span> <span class="n">all</span> <span class="n">onExit</span> <span class="o">{}</span> <span class="n">blocks</span>
-        <span class="n">run</span> <span class="n">all</span> <span class="nc">Closables</span> <span class="n">registered</span> <span class="n">via</span> <span class="n">closeOnExitLast</span><span class="o">()</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>App#main<span class="o">()</span> --&gt;
+App#nonExitingMain<span class="o">()</span> --&gt;
+    <span class="nb">bind</span> LoadService bindings
+    run all init <span class="o">{}</span> blocks
+    App#parseArgs<span class="o">()</span> // <span class="nb">read</span> <span class="nb">command</span> line args into Flags
+    run all premain <span class="o">{}</span> blocks --&gt;
+        add routes to TwitterServer AdminHttpServer
+        <span class="nb">bind</span> interface and start TwitterServer AdminHttpServer
+    c.t.inject.server.TwitterServer#main<span class="o">()</span> --&gt;
+        c.t.inject.app.App#main<span class="o">()</span> --&gt;
+            load/install modules
+            modules#postInjectorStartup<span class="o">()</span>
+            postInjectorStartup<span class="o">()</span> --&gt;
+                resolve finagle clients
+                setup<span class="o">()</span>
+            warmup<span class="o">()</span>
+            beforePostWarmup<span class="o">()</span> --&gt;
+                Lifecycle#prebindWarmup<span class="o">()</span>
+            postWarmup<span class="o">()</span> --&gt;
+                announce TwitterServer AdminHttpServer interface
+                <span class="nb">bind</span> external interfaces
+                announce external interfaces
+            afterPostwarmup<span class="o">()</span> --&gt;
+                Lifecycle#warmupComplete<span class="o">()</span>
+            modules#postWarmupComplete<span class="o">()</span>
+            register application started
+            c.t.inject.app.App#run<span class="o">()</span> --&gt;
+                c.t.inject.server.TwitterServer#start<span class="o">()</span>
+        block on awaitables
+    run all postmain <span class="o">{}</span> blocks
+    App#close<span class="o">()</span> --&gt;
+        run all onExit <span class="o">{}</span> blocks
+        run all Closables registered via closeOnExitLast<span class="o">()</span>
 </pre></div>
 </div>
 <p>Visually:</p>
 <img alt="../../_images/FinatraLifecycle.png" src="../../_images/FinatraLifecycle.png" />
-</div>
-<div class="section" id="server-shutdown-lifecycle">
+</section>
+<section id="server-shutdown-lifecycle">
 <h3>Server Shutdown Lifecycle<a class="headerlink" href="#server-shutdown-lifecycle" title="Permalink to this headline">¶</a></h3>
 <p>Upon <em>graceful</em> shutdown of an application or a server, all registered <cite>onExit</cite>, <cite>closeOnExit</cite>, and
 <cite>closeOnExitLast</cite> blocks are executed. See
@@ -272,8 +277,8 @@ and shutting down and closing all installed modules. For extensions of the
 <a class="reference external" href="../http/server.html">HttpServer</a> or <a class="reference external" href="../thrift/server.html">ThriftServer</a> traits this also
 includes closing any external interfaces.</p>
 <div class="admonition-important admonition">
-<p class="first admonition-title">Important</p>
-<p class="last">Note that the order of execution for all registered <cite>onExit</cite> and <cite>closeOnExit</cite> blocks is not
+<p class="admonition-title">Important</p>
+<p>Note that the order of execution for all registered <cite>onExit</cite> and <cite>closeOnExit</cite> blocks is not
 guaranteed as they are executed on graceful shutdown roughly in parallel. Thus it is up to
 implementors to enforce any desired ordering.</p>
 </div>
@@ -282,21 +287,21 @@ data, and then publishing (via a “publisher”) to another queue. When the mai
 you most likely want to close the “subscriber” first to ensure that you transform and publish all
 available data before closing the “publisher”.</p>
 <p>Assuming, that both objects are a <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/Closable.scala"><cite>c.t.util.Closable</cite></a> type, a simple way to close them would be:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span><span class="o">(</span><span class="n">subscriber</span><span class="o">)</span>
-<span class="n">closeOnExit</span><span class="o">(</span><span class="n">publisher</span><span class="o">)</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span><span class="p">(</span><span class="n">subscriber</span><span class="p">)</span>
+<span class="n">closeOnExit</span><span class="p">(</span><span class="n">publisher</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>However, the “subscriber” and the “publisher” would close roughly in parallel
 which could lead to data inconsistencies in your server if the “subscriber” is still reading before
 the “publisher” has closed.</p>
-<div class="section" id="ordering-onexit-and-closeonexit-functions">
+<section id="ordering-onexit-and-closeonexit-functions">
 <h4>Ordering <cite>onExit</cite> and <cite>closeOnExit</cite> functions?<a class="headerlink" href="#ordering-onexit-and-closeonexit-functions" title="Permalink to this headline">¶</a></h4>
 <p>Assuming, that the <cite>#close()</cite> method of both returns <cite>Future[Unit]</cite>, e.g. like a <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/Closable.scala"><cite>c.t.util.Closable</cite></a>,
 a way of doing this could be:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">onExit</span> <span class="o">{</span>
-  <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">subscriber</span><span class="o">.</span><span class="n">close</span><span class="o">(</span><span class="n">defaultCloseGracePeriod</span><span class="o">))</span>
-  <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">publisher</span><span class="o">.</span><span class="n">close</span><span class="o">(</span><span class="n">defaultCloseGracePeriod</span><span class="o">))</span>
-<span class="o">}</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">onExit</span> <span class="p">{</span>
+  <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">subscriber</span><span class="p">.</span><span class="n">close</span><span class="p">(</span><span class="n">defaultCloseGracePeriod</span><span class="p">))</span>
+  <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">publisher</span><span class="p">.</span><span class="n">close</span><span class="p">(</span><span class="n">defaultCloseGracePeriod</span><span class="p">))</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>where the <cite>defaultCloseGracePeriod</cite> is the <a class="reference external" href="https://github.com/twitter/util/blob/bf47b55ff45a31bbd541f66257f2244df5c35f5b/util-app/src/main/scala/com/twitter/app/App.scala#L110">c.t.app.App#defaultCloseGracePeriod</a>
@@ -308,99 +313,99 @@ well since we do not want to accidentally block our server shutdown if the <cite
 is set to something high or infinite (e.g., <a class="reference external" href="https://github.com/twitter/util/blob/bf47b55ff45a31bbd541f66257f2244df5c35f5b/util-core/src/main/scala/com/twitter/util/Time.scala#L302">Time.Top</a>).</p>
 <p>But if we don’t know the configured value of the  <cite>defaultCloseGracePeriod</cite> this makes things
 complicated. We could just hardcode a value for the Await, or not use the <cite>defaultCloseGracePeriod</cite>:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">onExit</span> <span class="o">{</span>
-  <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">subscriber</span><span class="o">.</span><span class="n">close</span><span class="o">(</span><span class="n">defaultCloseGracePeriod</span><span class="o">),</span> <span class="mf">5.</span><span class="n">seconds</span><span class="o">)</span>
-  <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">publisher</span><span class="o">.</span><span class="n">close</span><span class="o">(</span><span class="n">defaultCloseGracePeriod</span><span class="o">),</span> <span class="mf">5.</span><span class="n">seconds</span><span class="o">)</span>
-<span class="o">}</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">onExit</span> <span class="p">{</span>
+  <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">subscriber</span><span class="p">.</span><span class="n">close</span><span class="p">(</span><span class="n">defaultCloseGracePeriod</span><span class="p">),</span> <span class="mi">5</span><span class="p">.</span><span class="n">seconds</span><span class="p">)</span>
+  <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">publisher</span><span class="p">.</span><span class="n">close</span><span class="p">(</span><span class="n">defaultCloseGracePeriod</span><span class="p">),</span> <span class="mi">5</span><span class="p">.</span><span class="n">seconds</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span class="o">...</span>
+<span class="p">...</span>
 
-<span class="n">onExit</span> <span class="o">{</span>
-  <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">subscriber</span><span class="o">.</span><span class="n">close</span><span class="o">(</span><span class="mf">4.</span><span class="n">seconds</span><span class="o">),</span> <span class="mf">5.</span><span class="n">seconds</span><span class="o">)</span>
-  <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">publisher</span><span class="o">.</span><span class="n">close</span><span class="o">(</span><span class="mf">4.</span><span class="n">seconds</span><span class="o">),</span> <span class="mf">5.</span><span class="n">seconds</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="n">onExit</span> <span class="p">{</span>
+  <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">subscriber</span><span class="p">.</span><span class="n">close</span><span class="p">(</span><span class="mi">4</span><span class="p">.</span><span class="n">seconds</span><span class="p">),</span> <span class="mi">5</span><span class="p">.</span><span class="n">seconds</span><span class="p">)</span>
+  <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">publisher</span><span class="p">.</span><span class="n">close</span><span class="p">(</span><span class="mi">4</span><span class="p">.</span><span class="n">seconds</span><span class="p">),</span> <span class="mi">5</span><span class="p">.</span><span class="n">seconds</span><span class="p">)</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>However, this is obviously not ideal and there is an easier way. You can enforce the ordering of
 closing Closables by using <cite>closeOnExitLast</cite>.</p>
 <p>A <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/Closable.scala"><cite>c.t.util.Closable</cite></a> passed to <cite>closeOnExitLast</cite> will be closed <em>after</em> all <cite>onExit</cite> and
 <cite>closeOnExit</cite> functions are executed. E.g.,</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span><span class="o">(</span><span class="n">subscriber</span><span class="o">)</span>
-<span class="n">closeOnExitLast</span><span class="o">(</span><span class="n">publisher</span><span class="o">)</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span><span class="p">(</span><span class="n">subscriber</span><span class="p">)</span>
+<span class="n">closeOnExitLast</span><span class="p">(</span><span class="n">publisher</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In this code the “publisher” is guaranteed be closed <strong>after</strong> the “subscriber”.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">All the exit functions: <cite>onExit</cite>, <cite>closeOnExit</cite>, and <cite>closeOnExitLast</cite> use the
+<p class="admonition-title">Note</p>
+<p>All the exit functions: <cite>onExit</cite>, <cite>closeOnExit</cite>, and <cite>closeOnExitLast</cite> use the
 <cite>defaultCloseGracePeriod</cite> as their close “deadline” and will raise a <cite>TimeoutException</cite> if
 all the <cite>exits</cite> (collected <cite>onExit</cite>, <cite>closeOnExit</cite> functions) do not close within the deadline.
 And if the <cite>lastExits</cite> (collected <cite>closeOnExitLast</cite> functions) do not close within the deadline.</p>
 </div>
 <p>If you have multiple <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/Closable.scala"><cite>c.t.util.Closable</cite></a> objects you want to close in parallel and one you want to
 close after all the others, you could do:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span><span class="o">(</span><span class="n">subscriberA</span><span class="o">)</span>
-<span class="n">closeOnExit</span><span class="o">(</span><span class="n">subscriberB</span><span class="o">)</span>
-<span class="n">closeOnExit</span><span class="o">(</span><span class="n">subscriberC</span><span class="o">)</span>
-<span class="n">closeOnExitLast</span><span class="o">(</span><span class="n">publisher</span><span class="o">)</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span><span class="p">(</span><span class="n">subscriberA</span><span class="p">)</span>
+<span class="n">closeOnExit</span><span class="p">(</span><span class="n">subscriberB</span><span class="p">)</span>
+<span class="n">closeOnExit</span><span class="p">(</span><span class="n">subscriberC</span><span class="p">)</span>
+<span class="n">closeOnExitLast</span><span class="p">(</span><span class="n">publisher</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The “publisher” is guaranteed be closed <strong>after</strong> the closing of “subscriberA”, “subscriberB”, and
 “subscriberC”.</p>
-</div>
-<div class="section" id="what-to-do-if-you-don-t-have-a-c-t-util-closable">
+</section>
+<section id="what-to-do-if-you-don-t-have-a-c-t-util-closable">
 <h4>What to do if you don’t have a <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/Closable.scala"><cite>c.t.util.Closable</cite></a>?<a class="headerlink" href="#what-to-do-if-you-don-t-have-a-c-t-util-closable" title="Permalink to this headline">¶</a></h4>
 <p>You can simply use the <cite>onExit</cite> block to perform any shutdown logic, or you can wrap a function in
 a <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/Closable.scala"><cite>c.t.util.Closable</cite></a> to be passed to <cite>closeOnExit</cite> or <cite>closeOnExitLast</cite>.</p>
 <p>For example:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">onExit</span> <span class="o">{</span>
-   <span class="nc">DatabaseConnection</span><span class="o">.</span><span class="n">drain</span><span class="o">()</span>
-   <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">someFutureOperation</span><span class="o">,</span> <span class="mf">2.</span><span class="n">seconds</span><span class="o">)</span>
-<span class="o">}</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">onExit</span> <span class="p">{</span>
+   <span class="nc">DatabaseConnection</span><span class="p">.</span><span class="n">drain</span><span class="p">()</span>
+   <span class="nc">Await</span><span class="p">.</span><span class="n">result</span><span class="p">(</span><span class="n">someFutureOperation</span><span class="p">,</span> <span class="mi">2</span><span class="p">.</span><span class="n">seconds</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span class="n">closeOnExit</span> <span class="o">{</span>
-  <span class="nc">Closable</span><span class="o">.</span><span class="n">make</span> <span class="o">{</span> <span class="n">deadline</span> <span class="k">=&gt;</span>
-   <span class="n">prepWork</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+<span class="n">closeOnExit</span> <span class="p">{</span>
+  <span class="nc">Closable</span><span class="p">.</span><span class="n">make</span> <span class="p">{</span> <span class="n">deadline</span> <span class="o">=&gt;</span>
+   <span class="n">prepWork</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
    <span class="n">anotherFutureOperation</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
-<span class="n">closeOnExitLast</span> <span class="o">{</span>
-  <span class="nc">Closable</span><span class="o">.</span><span class="n">make</span> <span class="o">{</span> <span class="n">deadline</span> <span class="k">=&gt;</span>
-    <span class="n">queue</span><span class="o">.</span><span class="n">blockingStop</span><span class="o">(</span><span class="n">deadline</span><span class="o">)</span>
-    <span class="nc">Future</span><span class="o">.</span><span class="nc">Unit</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+<span class="n">closeOnExitLast</span> <span class="p">{</span>
+  <span class="nc">Closable</span><span class="p">.</span><span class="n">make</span> <span class="p">{</span> <span class="n">deadline</span> <span class="o">=&gt;</span>
+    <span class="n">queue</span><span class="p">.</span><span class="n">blockingStop</span><span class="p">(</span><span class="n">deadline</span><span class="p">)</span>
+    <span class="nc">Future</span><span class="p">.</span><span class="nc">Unit</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>You can also wrap multiple functions in a Closable:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span> <span class="o">{</span>
-   <span class="nc">Closable</span><span class="o">.</span><span class="n">make</span> <span class="o">{</span> <span class="n">deadline</span> <span class="k">=&gt;</span>
-     <span class="n">database</span><span class="o">.</span><span class="n">drain</span><span class="o">()</span>
-     <span class="n">fileCleanUp</span><span class="o">.</span><span class="k">do</span><span class="o">()</span>
-     <span class="n">pushData</span><span class="o">(</span><span class="n">deadline</span><span class="o">)</span>
-     <span class="nc">Future</span><span class="o">.</span><span class="nc">Unit</span>
-   <span class="o">}</span>
-<span class="o">}</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">closeOnExit</span> <span class="p">{</span>
+   <span class="nc">Closable</span><span class="p">.</span><span class="n">make</span> <span class="p">{</span> <span class="n">deadline</span> <span class="o">=&gt;</span>
+     <span class="n">database</span><span class="p">.</span><span class="n">drain</span><span class="p">()</span>
+     <span class="n">fileCleanUp</span><span class="p">.</span><span class="k">do</span><span class="p">()</span>
+     <span class="n">pushData</span><span class="p">(</span><span class="n">deadline</span><span class="p">)</span>
+     <span class="nc">Future</span><span class="p">.</span><span class="nc">Unit</span>
+   <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Again the code in <cite>onExit</cite> and <cite>closeOnExit</cite> will be run in parallel and guaranteed to close
 before the functions in <cite>closeOnExitLast</cite>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Multiple <cite>closeOnExitLast</cite> Closables will be closed in parallel with each other but
+<p class="admonition-title">Note</p>
+<p>Multiple <cite>closeOnExitLast</cite> Closables will be closed in parallel with each other but
 <strong>after</strong> all <cite>onExit</cite> and <cite>closeOnExit</cite> functions have closed.</p>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="modules">
+</section>
+</section>
+</section>
+<section id="modules">
 <h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
 <p>Modules provide hooks into the Lifecycle as well that allow instances being provided to the object
 graph to be plugged into the overall application or server lifecycle. See the
 <a class="reference external" href="../getting-started/modules.html#module-lifecycle">Module Lifecycle</a> section for more information.</p>
-</div>
-<div class="section" id="more-information">
+</section>
+<section id="more-information">
 <h2>More Information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h2>
 <p>As noted in the diagram in the <a class="reference external" href="#startup">Startup</a> section the lifecycle or an application can be
 non-trivial – especially in the case of a <a class="reference external" href="https://github.com/twitter/twitter-server">TwitterServer</a>.</p>
@@ -408,10 +413,11 @@ non-trivial – especially in the case of a <a class="reference external" href="
 or a <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala">c.t.server.TwitterServer</a>
 see the <a class="reference external" href="../app/index.html">Creating an injectable App</a> and
 <a class="reference external" href="../twitter-server/index.html">Creating an injectable TwitterServer</a> sections.</p>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -433,6 +439,7 @@ see the <a class="reference external" href="../app/index.html">Creating an injec
   <h3><a href="../../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Application and Server Lifecycle</a><ul>
+<li><a class="reference internal" href="#choosing-between-twitterserver-and-app">Choosing between TwitterServer and App</a></li>
 <li><a class="reference internal" href="#c-t-app-app-lifecycle"><cite>c.t.app.App</cite> Lifecycle</a></li>
 <li><a class="reference internal" href="#c-t-inject-app-app-lifecycle"><cite>c.t.inject.app.App</cite> Lifecycle</a></li>
 <li><a class="reference internal" href="#c-t-server-twitterserver-lifecycle"><cite>c.t.server.TwitterServer</cite> Lifecycle</a></li>
@@ -481,7 +488,7 @@ see the <a class="reference external" href="../app/index.html">Creating an injec
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

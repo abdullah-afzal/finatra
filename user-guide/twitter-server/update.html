@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Migrating from c.t.server.TwitterServer &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-39101739-4', 'twitter.github.io');
+    ga('send', 'pageview');
+
+  </script>
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Migrating from <cite>c.t.server.TwitterServer</cite></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="migrating-from-c-t-server-twitterserver">
+<span id="migrating-from-twitter-server"></span><h1>Migrating from <cite>c.t.server.TwitterServer</cite><a class="headerlink" href="#migrating-from-c-t-server-twitterserver" title="Permalink to this headline">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/twitter/twitter-server/blob/e4acf5fe144d59ebae92e465c8b80e717f96a2b3/server/src/main/scala/com/twitter/server/TwitterServer.scala#L13">c.t.server.TwitterServer</a>
+is fairly straight-forward when it comes to what the framework provides in order to create a server.
+You extend a trait and implement a main method.</p>
+<p>A basic TwitterServer may look like this (from <a class="reference external" href="https://twitter.github.io/twitter-server/#getting-started">TwitterServer: Getting Started</a>):</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">TwitterServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nc">Http</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nc">ListeningServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nc">Service</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">Request</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">Response</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">Status</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nc">Await</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nc">Future</span>
+
+<span class="k">object</span> <span class="nc">BasicServer</span> <span class="k">extends</span> <span class="nc">TwitterServer</span> <span class="p">{</span>
+ <span class="kd">val</span> <span class="n">service</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Service</span><span class="p">[</span><span class="nc">Request</span><span class="p">,</span> <span class="nc">Response</span><span class="p">]</span> <span class="p">{</span>
+   <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="nc">Request</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="kd">val</span> <span class="n">response</span> <span class="o">=</span> <span class="nc">Response</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">version</span><span class="p">,</span> <span class="nc">Status</span><span class="p">.</span><span class="nc">Ok</span><span class="p">)</span>
+     <span class="n">response</span><span class="p">.</span><span class="n">contentString</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span>
+     <span class="nc">Future</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="n">server</span><span class="p">:</span> <span class="nc">ListeningServer</span> <span class="o">=</span> <span class="nc">Http</span><span class="p">.</span><span class="n">serve</span><span class="p">(</span><span class="s">&quot;:8888&quot;</span><span class="p">,</span> <span class="n">service</span><span class="p">)</span>
+   <span class="n">onExit</span> <span class="p">{</span>
+     <span class="n">server</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+   <span class="p">}</span>
+   <span class="nc">Await</span><span class="p">.</span><span class="n">ready</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This will serve the defined “service” (a Finagle <a class="reference external" href="https://github.com/twitter/finagle/blob/develop/finagle-core/src/main/scala/com/twitter/finagle/Service.scala">Service</a>
+over the Finagle HTTP <a class="reference external" href="https://github.com/twitter/finagle/blob/develop/finagle-base-http/src/main/scala/com/twitter/finagle/http/Request.scala">Request</a>
+and <a class="reference external" href="https://github.com/twitter/finagle/blob/develop/finagle-base-http/src/main/scala/com/twitter/finagle/http/Response.scala">Response</a>
+types) using the HTTP protocol, accepting requests on port <cite>8888</cite> of the machine on which this code
+is executed. When the “BasicServer” TwitterServer is gracefully shutdown, it will attempt to close
+the created Finagle HTTP server.</p>
+<p>More information on Finagle <a class="reference external" href="https://twitter.github.io/finagle/guide/ServicesAndFilters.html">Services &amp; Filters</a>.</p>
+</section>
+<section id="c-t-server-twitterserver-lifecycle">
+<h2><cite>c.t.server.TwitterServer</cite> Lifecycle<a class="headerlink" href="#c-t-server-twitterserver-lifecycle" title="Permalink to this headline">¶</a></h2>
+<p><cite>c.t.server.TwitterServer</cite> has a nominal lifecycle but it is not strictly enforced (hence the common
+problem of reading Flag values before they have been parsed). Since <cite>c.t.server.TwitterServer</cite>
+extends <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala">c.t.app.App</a>
+it inherits <cite>c.t.app.App’s</cite> lifecycle defined by <cite>c.t.app.App#main</cite> (which delegates to
+<a class="reference external" href="https://github.com/twitter/util/blob/ce78eeb4eaed4408f1e0eff8de605a1927335395/util-app/src/main/scala/com/twitter/app/App.scala#L409">c.t.app.App#nonExitingMain</a>)
+which at a high-level looks like this:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">inits</span> <span class="o">-&gt;</span> <span class="n">parse</span> <span class="n">flags</span> <span class="o">-&gt;</span> <span class="n">premains</span> <span class="o">-&gt;</span> <span class="n">main</span> <span class="o">-&gt;</span> <span class="n">postmains</span> <span class="o">-&gt;</span> <span class="n">exits</span>
+</pre></div>
+</div>
+<p>This is detailed more in-depth in <a class="reference internal" href="../getting-started/lifecycle.html#lifecycle"><span class="std std-ref">Application and Server Lifecycle</span></a>.</p>
+<p>The bulk of your <cite>c.t.server.TwitterServer</cite> logic is typically contained in your <cite>TwitterServer#main</cite>
+implementation which is looked up and invoked <a class="reference external" href="https://github.com/twitter/util/blob/ce78eeb4eaed4408f1e0eff8de605a1927335395/util-app/src/main/scala/com/twitter/app/App.scala#L428">via reflection</a>
+by <cite>c.t.app.App</cite>. You can register multiple “inits”, “premains”, “postmains”, or “exits”. These are
+<a class="reference external" href="https://github.com/twitter/util/blob/ce78eeb4eaed4408f1e0eff8de605a1927335395/util-app/src/main/scala/com/twitter/app/App.scala#L123">collected in sequence</a>
+by <cite>c.t.app.App</cite> and executed in order.</p>
+<p>This can get very hard to reason about quickly if you have a complicated trait hierarchy.</p>
+<p>Remember, that this lifecycle happens when the <cite>c.t.app.App#main</cite> is called. Thus a common mistake is
+for users to attempt to read Flag values eagerly in class or object constructors or in an “init” block
+all or which occur before Flag parsing and which will result in the “<code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">read</span> <span class="pre">before</span> <span class="pre">parsed</span></code>”
+warning or result in a fatal error if you have set <cite>c.t.app.App#failFastOnFlagsNotParsed = true</cite>.</p>
+<section id="c-t-server-lifecycle-warmup">
+<h3>c.t.server.Lifecycle.Warmup<a class="headerlink" href="#c-t-server-lifecycle-warmup" title="Permalink to this headline">¶</a></h3>
+<p>In addition to inheriting <cite>c.t.app.App</cite>’s simple <a class="reference external" href="../getting-started/lifecycle.html">lifecycle</a>,
+<cite>c.t.server.TwitterServer</cite> also provides an additional lifecycle phase related to server warmup via
+the <a class="reference external" href="https://github.com/twitter/twitter-server/blob/e4acf5fe144d59ebae92e465c8b80e717f96a2b3/server/src/main/scala/com/twitter/server/Lifecycle.scala#L133">c.t.server.Lifecycle.Warmup</a>
+trait.</p>
+<p>This trait is meant for servers to signal when they have completed work done to warm up the server
+before then accepting traffic. Bytes are passed as soon as the Finagle <a class="reference external" href="https://github.com/twitter/finagle/blob/1bd4c2dfcad97f6460e4b3fbd7beb48d9331bba4/finagle-core/src/main/scala/com/twitter/finagle/Server.scala#L13">ListeningServer</a>
+binds to a port. This can potentially cause garbage to be created as requests begin to flow into the
+server and possibly trigger a <strong>major garbage collection</strong> negatively affecting requests being served
+as the server reaches a steady state.</p>
+<p>Thus, warmup is commonly used to exercise code paths of the server such that startup does not
+negatively affect any initial traffic to the server. The <cite>Lifecycle.Warmup</cite> trait provides a utility
+to trigger garbage collection which should ideally be run right before binding to the network port
+to accept traffic.</p>
+<p>Thus if we update our example we now have:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">Lifecycle</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">TwitterServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nc">Http</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nc">ListeningServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nc">Service</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">Request</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">Response</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">http</span><span class="p">.</span><span class="nc">Status</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nc">Await</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nc">Future</span>
+
+ <span class="k">object</span> <span class="nc">BasicServer</span> <span class="k">extends</span> <span class="nc">TwitterServer</span> <span class="k">with</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">Warmup</span> <span class="p">{</span>
+  <span class="kd">val</span> <span class="n">service</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Service</span><span class="p">[</span><span class="nc">Request</span><span class="p">,</span> <span class="nc">Response</span><span class="p">]</span> <span class="p">{</span>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="nc">Request</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="n">response</span> <span class="o">=</span> <span class="nc">Response</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">version</span><span class="p">,</span> <span class="nc">Status</span><span class="p">.</span><span class="nc">Ok</span><span class="p">)</span>
+      <span class="n">response</span><span class="p">.</span><span class="n">contentString</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span>
+      <span class="nc">Future</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">prebindWarmup</span><span class="p">()</span>
+    <span class="n">warmupComplete</span><span class="p">()</span>
+    <span class="c1">// post-warmup, bind to our port</span>
+    <span class="kd">val</span> <span class="n">server</span><span class="p">:</span> <span class="nc">ListeningServer</span> <span class="o">=</span> <span class="nc">Http</span><span class="p">.</span><span class="n">serve</span><span class="p">(</span><span class="s">&quot;:8888&quot;</span><span class="p">,</span> <span class="n">service</span><span class="p">)</span>
+    <span class="n">onExit</span> <span class="p">{</span>
+      <span class="n">server</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="nc">Await</span><span class="p">.</span><span class="n">ready</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Here we make sure to call <a class="reference external" href="https://github.com/twitter/twitter-server/blob/e4acf5fe144d59ebae92e465c8b80e717f96a2b3/server/src/main/scala/com/twitter/server/Lifecycle.scala#L142">prebindWarmup()</a>
+and <a class="reference external" href="https://github.com/twitter/twitter-server/blob/e4acf5fe144d59ebae92e465c8b80e717f96a2b3/server/src/main/scala/com/twitter/server/Lifecycle.scala#L149">warmupComplete()</a>
+manually in the correct places before we call <cite>Http.serve</cite> which returns the bound <cite>ListeningServer</cite>.
+This is to ensure we’ve done as much towards garbage collection before accepting traffic on our
+external interface.</p>
+<p>Still somewhat straight-forward…but you can see that it is starting to get easier to get wrong.
+This is a <em>very</em> basic server and we’re not using any Flags in this example.</p>
+</section>
+</section>
+<section id="c-t-inject-server-twitterserver-lifecycle">
+<h2><cite>c.t.inject.server.TwitterServer</cite> Lifecycle<a class="headerlink" href="#c-t-inject-server-twitterserver-lifecycle" title="Permalink to this headline">¶</a></h2>
+<p>The “injectable” TwitterServer, <a class="reference external" href="./index.html">c.t.inject.server.TwitterServer</a> uses dependency
+injection to create an object graph and thus attempts to ensure the <a class="reference external" href="../getting-started/dependency_injection.html">Injector</a>
+is correctly constructed before it is used by controlling the TwitterServer lifecycle. Therefore,
+the biggest shift from a “vanilla” <cite>c.t.server.TwitterServer</cite> to the “injectable” <cite>c.t.inject.server.TwitterServer</cite>
+is that the Finatra framework controls the <cite>c.t.server.TwitterServer</cite> lifecycle and provides callbacks
+for the user which will be run at the “appropriate” part in the server lifecycle.</p>
+<p>At the same time, the framework also provides <em>more</em> (finer-grain) lifecycle callbacks within the
+<cite>main</cite> TwitterServer phase including for warmup:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">warmup</span><span class="o">*</span> <span class="o">-&gt;</span>
+<span class="n">beforePostWarmup</span> <span class="p">(</span><span class="nc">Lifecycle</span><span class="n">#prebindWarmup</span><span class="p">)</span> <span class="o">-&gt;</span>
+<span class="o">*</span><span class="n">postWarmup</span><span class="o">*</span> <span class="p">(</span><span class="n">bind</span> <span class="n">and</span> <span class="n">announce</span> <span class="n">external</span> <span class="n">interfaces</span><span class="p">)</span> <span class="o">-&gt;</span>
+<span class="n">afterPostWarmup</span> <span class="p">(</span><span class="nc">Lifecycle</span><span class="n">#warmupComplete</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Users generally only need to be concerned about <cite>warmup</cite> and <cite>postWarmup</cite> (but can override the other callbacks if desired).</p>
+<p>Much more detail on the enhanced lifecycle within an injectable TwitterServer available <a class="reference external" href="../getting-started/lifecycle.html#c-t-inject-server-twitterserver-lifecycle">here</a>.</p>
+<p>Because Finatra manages the lifecycle of the <cite>TwitterServer</cite>, you no longer place logic inside of a
+<cite>main</cite> method but into the different lifecycle method callbacks accordingly. Taking the <cite>c.t.app.App</cite>
+lifecycle from above we can expand to show Finatra’s further breakdown of the <cite>main</cite> method into
+the various additional lifecycle phases:</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">inits</span> <span class="o">-&gt;</span> <span class="n">parse</span> <span class="n">flags</span> <span class="o">-&gt;</span> <span class="n">premains</span> <span class="o">-&gt;</span> <span class="n">main</span> <span class="o">-&gt;</span> <span class="n">postmains</span> <span class="o">-&gt;</span> <span class="n">exits</span>
+                                     <span class="o">/\</span>
+<span class="n">install</span> <span class="n">modules</span> <span class="o">-&gt;</span> <span class="n">modules</span><span class="p">.</span><span class="n">startup</span> <span class="o">--&gt;</span> <span class="n">postInjectorStartup</span> <span class="o">-&gt;</span> <span class="n">warmup</span> <span class="o">-&gt;</span> <span class="n">beforePostWarmup</span> <span class="o">-&gt;</span> <span class="n">postWarmup</span> <span class="o">-&gt;</span> <span class="n">afterPostWarmup</span> <span class="o">-&gt;</span> <span class="n">start</span> <span class="o">-&gt;</span> <span class="n">onExit</span><span class="p">(</span><span class="n">modules</span><span class="p">.</span><span class="n">shutdown</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When overriding any lifecycle methods and callbacks, it is important to <strong>not perform any blocking
+operations</strong> in your override as you will prevent the server from properly starting. If there is
+blocking work that must be done, it is strongly recommended that you perform this work in a
+<a class="reference external" href="https://github.com/twitter/util/blob/develop/util-core/src/main/scala/com/twitter/util/FuturePool.scala">FuturePool</a>.</p>
+<p>See the Finatra utility: <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/utils/src/main/scala/com/twitter/finatra/utils/FuturePools.scala"><code class="docutils literal notranslate"><span class="pre">c.t.finatra.utils.FuturePools</span></code></a> for creating named pools.</p>
+</div>
+<p>Migration entails moving (and possibly segmenting) the monolithic logic in your current <cite>main()</cite> method
+into the different lifecycle callbacks available via the <a class="reference internal" href="../getting-started/lifecycle.html#lifecycle"><span class="std std-ref">Application and Server Lifecycle</span></a>. It is important to understand
+the <a class="reference internal" href="../getting-started/lifecycle.html#lifecycle"><span class="std std-ref">Application and Server Lifecycle</span></a> to know what parts of your <cite>main()</cite> logic maps to which fine-grain Finatra lifecycle
+callback.</p>
+<p>See <a class="reference internal" href="index.html#injectable-twitter-server"><span class="std std-ref">Creating an injectable TwitterServer</span></a> for a walk-through of creating a new injectable TwitterServer
+which explains what logic goes into which lifecycle callback.</p>
+<p>From your original <cite>main()</cite> method, you now need to map to several different <a class="reference external" href="./index.html#lifecycle-callbacks">lifecycle callback methods</a>.
+Most commonly, this will mean splitting the logic between <cite>setup()</cite>, <cite>warmup()</cite>, <cite>postWarmup()</cite>, and <cite>start()</cite>.
+As per the documentation, <a class="reference internal" href="index.html#injectable-twitter-server"><span class="std std-ref">Creating an injectable TwitterServer</span></a> the primary logic of your <cite>main()</cite> will now be in
+<cite>start()</cite>.</p>
+<p>The <cite>setup()</cite> method is called right after the <a class="reference external" href="../getting-started/dependency_injection.html">Injector</a> is created,
+<cite>warmup()</cite> is for ensuring that your code paths are exercised and that you can get in a garbage collection before
+serving any traffic. The <cite>postWarmup()</cite> is where we recommend starting and announcing any external interfaces
+(make sure that you <a class="reference external" href="./index.html#awaiting-awaitables">register any Awaitables</a>). And finally <cite>start()</cite> is for
+any remaining logic that must run.</p>
+<p>More details <a class="reference external" href="./index.html#overriding-server-lifecycle-functions">here</a>.</p>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Finatra provides rich support for <a class="reference external" href="../testing/feature_tests.html#c-t-server-twitterserver">testing a c.t.server.TwitterServer</a> and
+even more utility is available for <a class="reference external" href="../testing/feature_tests.html#c-t-inject-server-twitterserver">testing an “injectable” c.t.inject.server.TwitterServer</a>.</p>
+<p>For details see the <a class="reference external" href="../testing/index.html">Testing with Finatra</a> section.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/finatra_logo.png" alt="Logo"/>
+            </a></p><p>
+  <a href="https://github.com/twitter/finatra">Finatra</a> is a Scala services framework built on top of <a href="https://twitter.github.io/twitter-server/">TwitterServer</a> and <a href="https://twitter.github.io/finagle/">Finagle</a>.
+</p>
+
+<h3>Useful Links</h3>
+<ul>
+  <li><a href="https://twitter.github.io/finatra/user-guide">User's&nbsp;Guide</a></li>
+  <li><a href="https://finagle.github.io/blog/">Finagle&nbsp;Blog</a></li>
+  <li><a href="https://github.com/twitter/finatra">Finatra&nbsp;on&nbsp;Github</a></li>
+  <li><a href="https://github.com/twitter/finatra/issues">Github&nbsp;Issues</a></li>
+</ul>
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Migrating from <cite>c.t.server.TwitterServer</cite></a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#c-t-server-twitterserver-lifecycle"><cite>c.t.server.TwitterServer</cite> Lifecycle</a><ul>
+<li><a class="reference internal" href="#c-t-server-lifecycle-warmup">c.t.server.Lifecycle.Warmup</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#c-t-inject-server-twitterserver-lifecycle"><cite>c.t.inject.server.TwitterServer</cite> Lifecycle</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Search the contents of this site.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  
+    <div class="github-fork-ribbon-wrapper right fixed" style="width: 150px;height: 150px;position: fixed;overflow: hidden;top: 0;z-index: 9999;pointer-events: none;right: 0;"><div class="github-fork-ribbon" style="position: absolute;padding: 2px 0;background-color: #900;background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));-webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);-moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);z-index: 9999;pointer-events: auto;top: 42px;right: -43px;-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);"><a target="_blank" href="https://github.com/twitter/finatra" style="font: 700 13px &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;color: #fff;text-decoration: none;text-shadow: 0 -1px rgba(0, 0, 0, 0.5);text-align: center;width: 200px;line-height: 20px;display: inline-block;padding: 2px 0;border-width: 1px 0;border-style: dotted;border-color: rgba(255, 255, 255, 0.7);">Fork me on GitHub</a></div></div>
+  
+
+  <div class="footer">
+    &copy; Copyright 2024 Twitter, Inc.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
+  
+  </body>
+</html>

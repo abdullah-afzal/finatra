@@ -10,6 +10,7 @@ Getting Started
 - :doc:`getting-started/dependency_injection`
 - :doc:`getting-started/framework`
 - :doc:`getting-started/twitter_server`
+- :doc:`getting-started/comparison`
 - :doc:`getting-started/lifecycle`
 - :doc:`getting-started/modules`
 - :doc:`getting-started/binding_annotations`
@@ -34,6 +35,7 @@ Injectable TwitterServer
 ------------------------
 
 - :doc:`twitter-server/index`
+- :doc:`twitter-server/update`
 
 StatsReceiver
 -------------
@@ -90,13 +92,6 @@ Clients
 -------
 
 - :doc:`thrift/clients`
-
-Kafka Streams
--------------
-
-- :doc:`kafka-streams/index`
-- :doc:`kafka-streams/examples`
-- :doc:`kafka-streams/testing`
 
 Testing
 -------

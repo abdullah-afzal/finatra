@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Thrift Server Warmup &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Thrift Server Warmup &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="exceptions.html" title="Thrift Exception Mapping"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Thrift Server Warmup</a></li> 
       </ul>
     </div>  
 
@@ -59,11 +59,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="thrift-server-warmup">
+  <section id="thrift-server-warmup">
 <span id="thrift-warmup"></span><h1>Thrift Server Warmup<a class="headerlink" href="#thrift-server-warmup" title="Permalink to this headline">¶</a></h1>
 <p>There may be occasions where we want to exercise specific code paths before accepting traffic to the
 server (e.g., for triggering JIT in the JVM). We can do this via server warmup.</p>
-<div class="section" id="warmup">
+<section id="warmup">
 <h2>Warmup<a class="headerlink" href="#warmup" title="Permalink to this headline">¶</a></h2>
 <p>Finatra provides a <cite>warmup</cite> lifecycle callback function which will be executed in the correct phase
 of server startup, i.e, before the server’s external Thrift port is bound and thus before the
@@ -72,36 +72,36 @@ TwitterServer <a class="reference external" href="https://twitter.github.io/twit
 <p>See <a class="reference external" href="../getting-started/lifecycle.html">here</a> for more information on the lifecycle of a Finatra
 server.</p>
 <p>To perform warmup, simply override this callback method and implement your logic. E.g.,</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">DoEverythingModule</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.thrift.ThriftServer</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.thrift.routing.ThriftRouter</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.thrift.filters._</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nc">DoEverythingModule</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">thrift</span><span class="p">.</span><span class="nc">ThriftServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">thrift</span><span class="p">.</span><span class="nn">routing</span><span class="p">.</span><span class="nc">ThriftRouter</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">thrift</span><span class="p">.</span><span class="nn">filters</span><span class="p">.</span><span class="n">_</span>
 
 <span class="k">object</span> <span class="nc">ExampleServerMain</span> <span class="k">extends</span> <span class="nc">ExampleServer</span>
 
-<span class="k">class</span> <span class="nc">ExampleServer</span> <span class="k">extends</span> <span class="nc">ThriftServer</span> <span class="o">{</span>
+<span class="k">class</span> <span class="nc">ExampleServer</span> <span class="k">extends</span> <span class="nc">ThriftServer</span> <span class="p">{</span>
 
-  <span class="k">override</span> <span class="k">val</span> <span class="n">modules</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
-    <span class="nc">DoEverythingModule</span><span class="o">)</span>
+  <span class="k">override</span> <span class="kd">val</span> <span class="n">modules</span> <span class="o">=</span> <span class="nc">Seq</span><span class="p">(</span>
+    <span class="nc">DoEverythingModule</span><span class="p">)</span>
 
-  <span class="k">override</span> <span class="k">def</span> <span class="n">configureThrift</span><span class="o">(</span><span class="n">router</span><span class="k">:</span> <span class="kt">ThriftRouter</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">configureThrift</span><span class="p">(</span><span class="n">router</span><span class="p">:</span> <span class="nc">ThriftRouter</span><span class="p">):</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">router</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">LoggingMDCFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">TraceIdMDCFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">ThriftMDCFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">AccessLoggingFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">StatsFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">add</span><span class="o">[</span><span class="kt">ExampleThriftController</span><span class="o">]</span>
-  <span class="o">}</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">LoggingMDCFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">TraceIdMDCFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">ThriftMDCFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">AccessLoggingFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">StatsFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">add</span><span class="p">[</span><span class="nc">ExampleThriftController</span><span class="p">]</span>
+  <span class="p">}</span>
 
-  <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">warmup</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="nf">warmup</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1">// YOUR WARMUP LOGIC HERE &lt;----------------------------------------------</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="c-t-finatra-thrift-routing-thriftwarmup">
+</section>
+<section id="c-t-finatra-thrift-routing-thriftwarmup">
 <h2><cite>c.t.finatra.thrift.routing.ThriftWarmup</cite><a class="headerlink" href="#c-t-finatra-thrift-routing-thriftwarmup" title="Permalink to this headline">¶</a></h2>
 <p>Finatra provides a utility, <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/thrift/src/main/scala/com/twitter/finatra/thrift/routing/ThriftWarmup.scala">c.t.finatra.thrift.routing.ThriftWarmup</a>
 which will route requests to underlying service implementation configured by the
@@ -114,98 +114,99 @@ which simply instantiates a given <a class="reference external" href="https://gi
 via the injector and invokes its <cite>#handle()</cite> function.</p>
 <p>Combining the above, if we wanted to run an initial call through our Thrift service we could create
 the following handler:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">ExampleThriftController</span>
-<span class="k">import</span> <span class="nn">com.twitter.example.thriftscala.ExampleService.Add1</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.thrift.routing.ThriftWarmup</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.Logging</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.utils.Handler</span>
-<span class="k">import</span> <span class="nn">com.twitter.util.</span><span class="o">{</span><span class="nc">Await</span><span class="o">,</span> <span class="nc">Return</span><span class="o">,</span> <span class="nc">Throw</span><span class="o">,</span> <span class="nc">Try</span><span class="o">}</span>
-<span class="k">import</span> <span class="nn">scala.util.control.NonFatal</span>
-<span class="k">import</span> <span class="nn">javax.inject.Inject</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nc">ExampleThriftController</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">example</span><span class="p">.</span><span class="nn">thriftscala</span><span class="p">.</span><span class="nc">ExampleService</span><span class="p">.</span><span class="nc">Add1</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">thrift</span><span class="p">.</span><span class="nn">routing</span><span class="p">.</span><span class="nc">ThriftWarmup</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">Logging</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nn">utils</span><span class="p">.</span><span class="nc">Handler</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.{</span><span class="nc">Await</span><span class="p">,</span> <span class="nc">Return</span><span class="p">,</span> <span class="nc">Throw</span><span class="p">,</span> <span class="nc">Try</span><span class="p">}</span>
+<span class="k">import</span> <span class="nn">scala</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">control</span><span class="p">.</span><span class="nc">NonFatal</span>
+<span class="k">import</span> <span class="nn">javax</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">Inject</span>
 
-<span class="k">class</span> <span class="nc">ExampleThriftWarmupHandler</span> <span class="nd">@Inject</span><span class="o">()(</span>
- <span class="n">warmup</span><span class="k">:</span> <span class="kt">ThriftWarmup</span><span class="o">)</span>
+<span class="k">class</span> <span class="nc">ExampleThriftWarmupHandler</span> <span class="nd">@Inject</span><span class="p">()(</span>
+ <span class="n">warmup</span><span class="p">:</span> <span class="nc">ThriftWarmup</span><span class="p">)</span>
  <span class="k">extends</span> <span class="nc">Handler</span>
- <span class="k">with</span> <span class="nc">Logging</span> <span class="o">{</span>
+ <span class="k">with</span> <span class="nc">Logging</span> <span class="p">{</span>
 
   <span class="cm">/* Should be a ClientId that is white-listed to your service. */</span>
-  <span class="k">private</span> <span class="k">val</span> <span class="n">clientId</span> <span class="k">=</span> <span class="nc">ClientId</span><span class="o">(</span><span class="s">&quot;client123&quot;</span><span class="o">)</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="n">clientId</span> <span class="o">=</span> <span class="nc">ClientId</span><span class="p">(</span><span class="s">&quot;client123&quot;</span><span class="p">)</span>
 
-  <span class="k">override</span> <span class="k">def</span> <span class="n">handle</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="n">clientId</span><span class="o">.</span><span class="n">asCurrent</span> <span class="o">{</span>
-          <span class="n">warmup</span><span class="o">.</span><span class="n">send</span><span class="o">(</span>
-            <span class="n">method</span> <span class="k">=</span> <span class="nc">Add1</span><span class="o">,</span>
-            <span class="n">args</span> <span class="k">=</span> <span class="nc">Add1</span><span class="o">.</span><span class="nc">Args</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span> <span class="o">{</span> <span class="n">result</span><span class="k">:</span> <span class="kt">Try</span><span class="o">[</span><span class="kt">Add1.SuccessType</span><span class="o">]</span> <span class="k">=&gt;</span>
-              <span class="n">result</span> <span class="k">match</span> <span class="o">{</span>
-                <span class="k">case</span> <span class="nc">Return</span><span class="o">(</span><span class="n">value</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">assert</span><span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="mi">6</span><span class="o">,</span> <span class="s">&quot;Warmup request failed.&quot;</span><span class="o">)</span>
-                <span class="k">case</span> <span class="nc">Throw</span><span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">assert</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="s">&quot;Warmup request failed.&quot;</span><span class="o">)</span>
-              <span class="o">}</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
-      <span class="k">case</span> <span class="nc">NonFatal</span><span class="o">(</span><span class="n">e</span><span class="o">)</span> <span class="k">=&gt;</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">clientId</span><span class="p">.</span><span class="n">asCurrent</span> <span class="p">{</span>
+          <span class="n">warmup</span><span class="p">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="nc">Add1</span><span class="p">,</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nc">Add1</span><span class="p">.</span><span class="nc">Args</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span> <span class="p">{</span> <span class="n">result</span><span class="p">:</span> <span class="nc">Try</span><span class="p">[</span><span class="nc">Add1</span><span class="p">.</span><span class="nc">SuccessType</span><span class="p">]</span> <span class="o">=&gt;</span>
+              <span class="n">result</span> <span class="k">match</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="nc">Return</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">assert</span><span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="mi">6</span><span class="p">,</span> <span class="s">&quot;Warmup request failed.&quot;</span><span class="p">)</span>
+                <span class="k">case</span> <span class="nc">Throw</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">assert</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="s">&quot;Warmup request failed.&quot;</span><span class="p">)</span>
+              <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="nc">NonFatal</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="c1">// Here we don&#39;t want a warmup failure to prevent server start-up --</span>
         <span class="c1">// this is important if your service will call downstream services</span>
         <span class="c1">// during warmup that could be temporarily down or unavailable.</span>
         <span class="c1">// We don&#39;t want that unavailability to cause our server to fail</span>
         <span class="c1">// warm-up and thus prevent the server from starting. So we simply</span>
         <span class="c1">// log the error message here.</span>
-        <span class="n">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">getMessage</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span>
-    <span class="o">}</span>
-    <span class="n">info</span><span class="o">(</span><span class="s">&quot;Warm-up done.&quot;</span><span class="o">)</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+        <span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">getMessage</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">info</span><span class="p">(</span><span class="s">&quot;Warm-up done.&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>The handler above simply tries to call the <cite>Add1</cite> endpoint of the server.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">As noted above, be careful about exceptions which occur from calling endpoints on your service
+<p class="admonition-title">Warning</p>
+<p>As noted above, be careful about exceptions which occur from calling endpoints on your service
 during warmup. Exceptions which escape the handler will potentially stop your server from
 starting and thus, you most likely <strong>do not</strong> want an exception from a warmup call to propagate out
 of the handler.</p>
 </div>
 <p>You would then run this handler in <cite>warmup()</cite> lifecycle callback E.g.,</p>
 <p>E.g.,</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">DoEverythingModule</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.thrift.ThriftServer</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.thrift.routing.ThriftRouter</span>
-<span class="k">import</span> <span class="nn">com.twitter.finatra.thrift.filters._</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nc">DoEverythingModule</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">thrift</span><span class="p">.</span><span class="nc">ThriftServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">thrift</span><span class="p">.</span><span class="nn">routing</span><span class="p">.</span><span class="nc">ThriftRouter</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finatra</span><span class="p">.</span><span class="nn">thrift</span><span class="p">.</span><span class="nn">filters</span><span class="p">.</span><span class="n">_</span>
 
 <span class="k">object</span> <span class="nc">ExampleServerMain</span> <span class="k">extends</span> <span class="nc">ExampleServer</span>
 
-<span class="k">class</span> <span class="nc">ExampleServer</span> <span class="k">extends</span> <span class="nc">ThriftServer</span> <span class="o">{</span>
+<span class="k">class</span> <span class="nc">ExampleServer</span> <span class="k">extends</span> <span class="nc">ThriftServer</span> <span class="p">{</span>
 
-  <span class="k">override</span> <span class="k">val</span> <span class="n">modules</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
-    <span class="nc">DoEverythingModule</span><span class="o">)</span>
+  <span class="k">override</span> <span class="kd">val</span> <span class="n">modules</span> <span class="o">=</span> <span class="nc">Seq</span><span class="p">(</span>
+    <span class="nc">DoEverythingModule</span><span class="p">)</span>
 
-  <span class="k">override</span> <span class="k">def</span> <span class="n">configureThrift</span><span class="o">(</span><span class="n">router</span><span class="k">:</span> <span class="kt">ThriftRouter</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">configureThrift</span><span class="p">(</span><span class="n">router</span><span class="p">:</span> <span class="nc">ThriftRouter</span><span class="p">):</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">router</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">LoggingMDCFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">TraceIdMDCFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">ThriftMDCFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">AccessLoggingFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">filter</span><span class="o">[</span><span class="kt">StatsFilter</span><span class="o">]</span>
-      <span class="o">.</span><span class="n">add</span><span class="o">[</span><span class="kt">ExampleThriftController</span><span class="o">]</span>
-  <span class="o">}</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">LoggingMDCFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">TraceIdMDCFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">ThriftMDCFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">AccessLoggingFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">filter</span><span class="p">[</span><span class="nc">StatsFilter</span><span class="p">]</span>
+      <span class="p">.</span><span class="n">add</span><span class="p">[</span><span class="nc">ExampleThriftController</span><span class="p">]</span>
+  <span class="p">}</span>
 
-  <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">warmup</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="n">handle</span><span class="o">[</span><span class="kt">ExampleThriftWarmupHandler</span><span class="o">]()</span> <span class="o">&lt;----------------------------------------------</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="nf">warmup</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">handle</span><span class="p">[</span><span class="nc">ExampleThriftWarmupHandler</span><span class="p">]()</span> <span class="o">&lt;----------------------------------------------</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="more-information">
+</section>
+<section id="more-information">
 <h2>More information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h2>
 <p>For more information, we encourage you to take a look at the full
 <a class="reference external" href="https://github.com/twitter/finatra/tree/master/examples">finatra/examples</a> in the
 <a class="reference external" href="https://github.com/twitter/finatra">github</a> source.</p>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -264,7 +265,7 @@ of the handler.</p>
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

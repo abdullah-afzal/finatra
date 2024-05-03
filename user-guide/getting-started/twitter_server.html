@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>TwitterServer Basics &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>TwitterServer Basics &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="framework.html" title="Understanding the Codebase"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">TwitterServer Basics</a></li> 
       </ul>
     </div>  
 
@@ -59,11 +59,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="twitterserver-basics">
+  <section id="twitterserver-basics">
 <span id="twitter-server"></span><h1>TwitterServer Basics<a class="headerlink" href="#twitterserver-basics" title="Permalink to this headline">¶</a></h1>
 <p>All Finatra servers are <a class="reference external" href="https://github.com/twitter/twitter-server">TwitterServer</a>-based servers
 and thus it helps to understand some basics of a <a class="reference external" href="https://github.com/twitter/twitter-server">TwitterServer</a>.</p>
-<div class="section" id="http-admin-interface">
+<section id="http-admin-interface">
 <h2>HTTP Admin Interface<a class="headerlink" href="#http-admin-interface" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/twitter/twitter-server">TwitterServer</a>-based servers have the option to start
 an <a class="reference external" href="https://twitter.github.io/twitter-server/Features.html#admin-http-interface">HTTP Admin Interface</a>
@@ -71,27 +71,27 @@ bound to a port configurable via the <cite>-admin.port</cite> flag. If you want 
 this will be bound to a <em>separate</em> port configurable via either the <cite>-http.port</cite>, <cite>-https.port</cite> or
 <cite>-thrift.port</cite> flags, depending.</p>
 <p>For more information on using and setting command-line flags see <a class="reference external" href="../getting-started/flags.html#passing-flag-values-as-command-line-arguments">Flags</a>.</p>
-</div>
-<div class="section" id="disabling-the-twitterserver-adminhttpserver">
+</section>
+<section id="disabling-the-twitterserver-adminhttpserver">
 <h2>Disabling the TwitterServer <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/AdminHttpServer.scala">AdminHttpServer</a><a class="headerlink" href="#disabling-the-twitterserver-adminhttpserver" title="Permalink to this headline">¶</a></h2>
 <p>Some deployment environments such as <a class="reference external" href="https://www.heroku.com/">Heroku</a>, <a class="reference external" href="https://www.appfog.com/">AppFog</a>,
 and <a class="reference external" href="https://www.openshift.com">OpenShift</a> only allow a single port to be used when deploying an
 application.</p>
 <p>In these cases, you can programmatically disable the TwitterServer <a class="reference external" href="https://twitter.github.io/twitter-server/Features.html#http-admin-interface">HTTP Admin Interface</a>:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExampleServer</span> <span class="k">extends</span> <span class="nc">HttpServer</span> <span class="o">{</span>
-  <span class="k">override</span> <span class="k">val</span> <span class="n">disableAdminHttpServer</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">true</span>
-  <span class="o">...</span>
-<span class="o">}</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExampleServer</span> <span class="k">extends</span> <span class="nc">HttpServer</span> <span class="p">{</span>
+  <span class="k">override</span> <span class="kd">val</span> <span class="n">disableAdminHttpServer</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="o">=</span> <span class="kc">true</span>
+  <span class="p">...</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Since the <cite>-admin.port</cite> flag is currently still required to have a value by <a class="reference external" href="https://github.com/twitter/twitter-server">TwitterServer</a>
+<p class="admonition-title">Note</p>
+<p>Since the <cite>-admin.port</cite> flag is currently still required to have a value by <a class="reference external" href="https://github.com/twitter/twitter-server">TwitterServer</a>
 you should set the <cite>-admin.port</cite> flag and your external interface port e.g., <cite>-http.port</cite> flag to
 the <strong>same value</strong> when disabling the TwitterServer <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/AdminHttpServer.scala">AdminHttpServer</a>.</p>
 </div>
-</div>
-<div class="section" id="lifecycle-management">
+</section>
+<section id="lifecycle-management">
 <h2>Lifecycle Management<a class="headerlink" href="#lifecycle-management" title="Permalink to this headline">¶</a></h2>
 <p>While <a class="reference external" href="https://github.com/twitter/twitter-server">TwitterServer</a> provides a <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/Lifecycle.scala">Lifecycle</a>
 trait which exposes utilities to manage the lifecycle of your server it does not enforce how they
@@ -105,10 +105,11 @@ server is healthy, among other things.</p>
 <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/Lifecycle.scala">Lifecycle</a>
 trait functions is detailed in the <a class="reference external" href="../getting-started/lifecycle.html">Application and Server Lifecycle</a>
 section.</p>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -167,7 +168,7 @@ section.</p>
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

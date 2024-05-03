@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>How to properly configure the server StatsReceiver &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>How to properly configure the server StatsReceiver &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="index.html" title="Creating an injectable TwitterServer"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to properly configure the server <cite>StatsReceiver</cite></a></li> 
       </ul>
     </div>  
 
@@ -59,17 +59,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="how-to-properly-configure-the-server-statsreceiver">
+  <section id="how-to-properly-configure-the-server-statsreceiver">
 <span id="twitterserver-stats-receiver"></span><h1>How to properly configure the server <cite>StatsReceiver</cite><a class="headerlink" href="#how-to-properly-configure-the-server-statsreceiver" title="Permalink to this headline">¶</a></h1>
 <p>The Finatra framework builds upon <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>TwitterServer</cite></a> and for the most part functions as a direct
 extension of <a class="reference external" href="https://github.com/twitter/twitter-server/blob/develop/server/src/main/scala/com/twitter/server/TwitterServer.scala"><cite>TwitterServer</cite></a> features and functionality. There is, however, one important divergence
 which is important to highlight when using the Finatra framework with <a class="reference external" href="https://github.com/google/guice">Guice</a>
 <a class="reference external" href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a>.</p>
-<div class="section" id="c-t-server-stats-statsreceiver">
+<section id="c-t-server-stats-statsreceiver">
 <h2><cite>c.t.server.Stats#statsReceiver</cite><a class="headerlink" href="#c-t-server-stats-statsreceiver" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Do not set or access the <cite>com.twitter.finagle.stats.StatsReceiver</cite> via the <cite>c.t.server.Stats#statsReceiver</cite>
+<p class="admonition-title">Warning</p>
+<p>Do not set or access the <cite>com.twitter.finagle.stats.StatsReceiver</cite> via the <cite>c.t.server.Stats#statsReceiver</cite>
 trait when using the Finatra framework with <a class="reference external" href="https://github.com/google/guice">Guice</a>
 <a class="reference external" href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a>.</p>
 </div>
@@ -82,8 +82,8 @@ trait and thus this definition is available for use in the server.</p>
 <a class="reference external" href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> <strong>should not</strong> configure
 or access the server <cite>com.twitter.finagle.stats.StatsReceiver</cite> in this manner. Doing so will prevent
 the framework from properly <a class="reference external" href="../testing/embedded.html#inmemorystatsreceiver">replacing</a> the <cite>StatsReceiver</cite> in testing.</p>
-</div>
-<div class="section" id="use-a-statsreceivermodule">
+</section>
+<section id="use-a-statsreceivermodule">
 <h2>Use a <cite>StatsReceiverModule</cite><a class="headerlink" href="#use-a-statsreceivermodule" title="Permalink to this headline">¶</a></h2>
 <p>Instead, users should prefer to always interact with the <cite>StatsReceiver</cite> via the object graph.</p>
 <p>The framework provides a <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-modules/src/main/scala/com/twitter/inject/modules/StatsReceiverModule.scala">StatsReceiverModule</a>
@@ -93,71 +93,72 @@ which by default binds the <cite>StatsReceiver</cite> type to the <cite>LoadedSt
 <a class="reference external" href="https://github.com/twitter/finatra/blob/bfc557786087e7acddc8dec9434cba440a4987b8/inject/inject-server/src/main/scala/com/twitter/inject/server/TwitterServer.scala#L116">c.t.inject.server.Twitter#statsReceiverModule</a>
 with your customized implementation which will bind the <cite>StatsReceiver</cite> instance to the
 object graph.</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.google.inject.Module</span>
-<span class="k">import</span> <span class="nn">com.twitter.finagle.stats.</span><span class="o">{</span><span class="nc">StatsReceiver</span><span class="o">,</span> <span class="nc">LoadedStatsReceiver</span><span class="o">}</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.server.TwitterServer</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.TwitterModule</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">google</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">Module</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">stats</span><span class="p">.{</span><span class="nc">StatsReceiver</span><span class="p">,</span> <span class="nc">LoadedStatsReceiver</span><span class="p">}</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nn">server</span><span class="p">.</span><span class="nc">TwitterServer</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">TwitterModule</span>
 
-<span class="k">object</span> <span class="nc">MyCustomStatsReceiverModule</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="o">{</span>
+<span class="k">object</span> <span class="nc">MyCustomStatsReceiverModule</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="p">{</span>
 
-  <span class="k">override</span> <span class="k">def</span> <span class="n">configure</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="n">bind</span><span class="o">[</span><span class="kt">StatsReceiver</span><span class="o">].</span><span class="n">toInstance</span><span class="o">(</span><span class="nc">LoadedStatsReceiver</span><span class="o">.</span><span class="n">scope</span><span class="o">(</span><span class="s">&quot;oursvr&quot;</span><span class="o">))</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">configure</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">bind</span><span class="p">[</span><span class="nc">StatsReceiver</span><span class="p">].</span><span class="n">toInstance</span><span class="p">(</span><span class="nc">LoadedStatsReceiver</span><span class="p">.</span><span class="n">scope</span><span class="p">(</span><span class="s">&quot;oursvr&quot;</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
-<span class="k">class</span> <span class="nc">MyServer</span> <span class="k">extends</span> <span class="nc">TwitterServer</span> <span class="o">{</span>
+<span class="k">class</span> <span class="nc">MyServer</span> <span class="k">extends</span> <span class="nc">TwitterServer</span> <span class="p">{</span>
 
-  <span class="k">override</span> <span class="k">val</span> <span class="n">statsReceiverModule</span><span class="k">:</span> <span class="kt">Module</span> <span class="o">=</span> <span class="nc">MyCustomStatsReceiverModule</span>
+  <span class="k">override</span> <span class="kd">val</span> <span class="n">statsReceiverModule</span><span class="p">:</span> <span class="nc">Module</span> <span class="o">=</span> <span class="nc">MyCustomStatsReceiverModule</span>
 
-  <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">start</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="nf">start</span><span class="p">():</span> <span class="nc">Unit</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1">// It is important to remember to NOT BLOCK this method.</span>
-    <span class="k">val</span> <span class="n">sr</span> <span class="k">=</span> <span class="n">injector</span><span class="o">.</span><span class="n">instance</span><span class="o">[</span><span class="kt">StatsReceiver</span><span class="o">]</span>
+    <span class="kd">val</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">injector</span><span class="p">.</span><span class="n">instance</span><span class="p">[</span><span class="nc">StatsReceiver</span><span class="p">]</span>
     <span class="o">???</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="access-the-statsreceiver-from-the-object-graph">
+</section>
+<section id="access-the-statsreceiver-from-the-object-graph">
 <h2>Access the <cite>StatsReceiver</cite> from the Object Graph<a class="headerlink" href="#access-the-statsreceiver-from-the-object-graph" title="Permalink to this headline">¶</a></h2>
 <p>Finatra users should also not refer directly to the <cite>c.t.server.Stats#statsReceiver</cite> as this again
 will prevent proper testing of the server. Users should instead obtain the server <cite>StatsReceiver</cite>
 instance from the object graph, e.g.:</p>
 <p>Directly from the <a class="reference external" href="https://github.com/twitter/finatra/blob/develop/inject/inject-core/src/main/scala/com/twitter/inject/Injector.scala">Injector</a>:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.finagle.stats.StatsReceiver</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">stats</span><span class="p">.</span><span class="nc">StatsReceiver</span>
 
-<span class="k">val</span> <span class="n">sr</span> <span class="k">=</span> <span class="n">injector</span><span class="o">.</span><span class="n">instance</span><span class="o">[</span><span class="kt">StatsReceiver</span><span class="o">]</span>
+<span class="kd">val</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">injector</span><span class="p">.</span><span class="n">instance</span><span class="p">[</span><span class="nc">StatsReceiver</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Or as an injected constructor argument to a class:</p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.twitter.finagle.stats.StatsReceiver</span>
-<span class="k">import</span> <span class="nn">javax.inject.Inject</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">stats</span><span class="p">.</span><span class="nc">StatsReceiver</span>
+<span class="k">import</span> <span class="nn">javax</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">Inject</span>
 
-<span class="k">class</span> <span class="nc">Foo</span> <span class="nd">@Inject</span><span class="o">()</span> <span class="o">(</span><span class="n">statsReceiver</span><span class="k">:</span> <span class="kt">StatsReceiver</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">class</span> <span class="nc">Foo</span> <span class="nd">@Inject</span><span class="p">()</span> <span class="p">(</span><span class="n">statsReceiver</span><span class="p">:</span> <span class="nc">StatsReceiver</span><span class="p">)</span> <span class="p">{</span>
   <span class="o">???</span>
-<span class="o">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Or in an <cite>&#64;Provides</cite>-annotated method in a <cite>TwitterModule</cite></p>
-<div class="code scala highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.google.inject.Provides</span>
-<span class="k">import</span> <span class="nn">com.twitter.finagle.stats.StatsReceiver</span>
-<span class="k">import</span> <span class="nn">com.twitter.inject.TwitterModule</span>
-<span class="k">import</span> <span class="nn">javax.inject.Singleton</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">google</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">Provides</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">finagle</span><span class="p">.</span><span class="nn">stats</span><span class="p">.</span><span class="nc">StatsReceiver</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">TwitterModule</span>
+<span class="k">import</span> <span class="nn">javax</span><span class="p">.</span><span class="nn">inject</span><span class="p">.</span><span class="nc">Singleton</span>
 
-<span class="k">object</span> <span class="nc">MyModule</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="o">{</span>
+<span class="k">object</span> <span class="nc">MyModule</span> <span class="k">extends</span> <span class="nc">TwitterModule</span> <span class="p">{</span>
   <span class="nd">@Provides</span>
   <span class="nd">@Singleton</span>
-  <span class="k">def</span> <span class="n">providesBar</span><span class="o">(</span>
-    <span class="n">statsReceiver</span><span class="k">:</span> <span class="kt">StatsReceiver</span><span class="o">)</span><span class="k">:</span> <span class="kt">Bar</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">providesBar</span><span class="p">(</span>
+    <span class="n">statsReceiver</span><span class="p">:</span> <span class="nc">StatsReceiver</span><span class="p">):</span> <span class="nc">Bar</span> <span class="o">=</span> <span class="p">{</span>
     <span class="o">???</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -216,7 +217,7 @@ instance from the object graph, e.g.:</p>
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>

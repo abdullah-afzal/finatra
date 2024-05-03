@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Introduction to Logging With Finatra &#8212; Finatra 22.4.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction to Logging With Finatra &#8212; Finatra 24.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/flasky.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,7 +49,8 @@
           <a href="../getting-started/examples.html" title="Example Projects"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">Finatra</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User’s Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Introduction to Logging With Finatra</a></li> 
       </ul>
     </div>  
 
@@ -59,30 +59,30 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="introduction-to-logging-with-finatra">
+  <section id="introduction-to-logging-with-finatra">
 <span id="logging"></span><h1>Introduction to Logging With Finatra<a class="headerlink" href="#introduction-to-logging-with-finatra" title="Permalink to this headline">¶</a></h1>
 <p>Finatra uses the <a class="reference external" href="https://www.slf4j.org/manual.html">SLF4J</a> API for framework logging. By coupling
 the framework to only the <a class="reference external" href="https://www.slf4j.org/manual.html">SLF4J</a> API, application developers
 are free to choose their actual logging implementation.</p>
 <div class="admonition-from-the-slf4j-documentation admonition">
-<p class="first admonition-title">From the SLF4J documentation</p>
-<p class="last">“The Simple Logging Facade for Java serves as a simple facade or
+<p class="admonition-title">From the SLF4J documentation</p>
+<p>“The Simple Logging Facade for Java serves as a simple facade or
 abstraction for various logging frameworks, such as
 java.util.logging, Logback and Log4j. SLF4J allows the end-user to
 plug in the desired logging framework at deployment time.”</p>
 </div>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="admonition-title">Important</p>
 <p>Logback is the recommended SLF4J-API implementation. As such, <a class="reference external" href="https://github.com/twitter/finatra/tree/develop/inject/inject-app">finatra/inject/inject-app</a>
 and <a class="reference external" href="https://github.com/twitter/finatra/tree/develop/inject/inject-server">finatra/inject/inject-server</a>
 transitively provide SLF4J bridges for the following logging providers:</p>
-<ul class="last simple">
-<li><a class="reference external" href="https://en.wikipedia.org/wiki/Log4j">Log4J 1.x</a></li>
-<li><a class="reference external" href="https://commons.apache.org/proper/commons-logging/">commons-logging</a></li>
-<li><a class="reference external" href="https://docs.oracle.com/javase/7/docs/api/index.html?java/util/logging/package-summary.html">java.util.logging</a> (JUL)</li>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Log4j">Log4J 1.x</a></p></li>
+<li><p><a class="reference external" href="https://commons.apache.org/proper/commons-logging/">commons-logging</a></p></li>
+<li><p><a class="reference external" href="https://docs.oracle.com/javase/7/docs/api/index.html?java/util/logging/package-summary.html">java.util.logging</a> (JUL)</p></li>
 </ul>
 </div>
-<div class="section" id="bridging-logging-implementations">
+<section id="bridging-logging-implementations">
 <h2>Bridging Logging Implementations<a class="headerlink" href="#bridging-logging-implementations" title="Permalink to this headline">¶</a></h2>
 <p>For background see the SLF4J <a class="reference external" href="https://www.slf4j.org/legacy.html">Bridging legacy APIs</a> documentation.</p>
 <p><a class="reference external" href="https://github.com/twitter/twitter-server/blob/b4be9ff71f273a007f880df6ea433f238c2d1f18/server/src/main/scala/com/twitter/server/TwitterServer.scala#L40">TwitterServer</a>
@@ -97,8 +97,8 @@ implementations on your classpath, e.g., you should not have multiple SLF4J bind
 <cite>slf4j-log4j12</cite>, <cite>slf4j-jdk14</cite>, etc.) nor the <cite>java.util.logging</cite> implementation, etc. on your
 classpath as these are all competing implementations and since classpath order is non-deterministic,
 this will lead to unexpected logging behavior.</p>
-</div>
-<div class="section" id="util-util-slf4j-api">
+</section>
+<section id="util-util-slf4j-api">
 <h2><cite>util/util-slf4j-api</cite><a class="headerlink" href="#util-util-slf4j-api" title="Permalink to this headline">¶</a></h2>
 <p>While there are several scala-wrappers for SLF4J, Finatra uses the <a class="reference external" href="https://twitter.github.io/util/">TwitterUtil</a>
 <a class="reference external" href="https://github.com/twitter/util/tree/develop/util-slf4j-api">util-slf4j-api</a> project.</p>
@@ -106,18 +106,18 @@ this will lead to unexpected logging behavior.</p>
 trait and the <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-slf4j-api/src/main/scala/com/twitter/util/logging/Logger.scala">c.t.util.logging.Logger</a>
 class which provides a standard “Logger” interface that wraps the SLF4J <a class="reference external" href="https://www.javadoc.io/static/org.slf4j/slf4j-api/1.7.25/index.html?org/slf4j/Logger.html">org.slf4j.Logger</a>
 but with API ergonomics for Scala users and other optimizations.</p>
-<div class="section" id="c-t-util-logging-logging">
+<section id="c-t-util-logging-logging">
 <h3><cite>c.t.util.logging.Logging</cite><a class="headerlink" href="#c-t-util-logging-logging" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-slf4j-api/src/main/scala/com/twitter/util/logging/Logging.scala">c.t.util.logging.Logging</a>
 trait can be mixed into any object or class:</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span> <span class="k">import</span> <span class="nn">com.twitter.util.logging.Logging</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span> <span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logging</span>
 
-<span class="hll"> <span class="k">object</span> <span class="nc">MyObject</span> <span class="k">extends</span> <span class="nc">Logging</span> <span class="o">{</span>
-</span>   <span class="k">def</span> <span class="n">foo</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
-<span class="hll">     <span class="n">info</span><span class="o">(</span><span class="s">&quot;Calculating...&quot;</span><span class="o">)</span>
+<span class="hll"> <span class="k">object</span> <span class="nc">MyObject</span> <span class="k">extends</span> <span class="nc">Logging</span> <span class="p">{</span>
+</span>   <span class="k">def</span> <span class="nf">foo</span><span class="p">()</span> <span class="o">=</span> <span class="p">{</span>
+<span class="hll">     <span class="n">info</span><span class="p">(</span><span class="s">&quot;Calculating...&quot;</span><span class="p">)</span>
 </span>     <span class="s">&quot;bar&quot;</span>
-   <span class="o">}</span>
- <span class="o">}</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
 </pre></div>
 </div>
 <p>When mixing in this trait, a new <cite>c.t.util.logging.Logger</cite> <a class="reference external" href="https://github.com/twitter/util/blob/20a66daa41117e473b9d1cba2b2a459efca000af/util-slf4j-api/src/main/scala/com/twitter/util/logging/Logging.scala#L59">is instantiated</a>
@@ -127,145 +127,146 @@ within the current class, e.g., <cite>trace</cite>, <cite>debug</cite>, <cite>in
 for details.</p>
 <p>As an example, in the code above, by mixing in the <cite>Logging</cite> trait the <cite>MyObject</cite> now has a logger named
 for the <cite>MyObject.getClass</cite> class. E.g.,</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>Welcome to Scala 2.12.15 (JDK 64-Bit Server VM, Java 1.8.0_275).
-Type in expressions for evaluation. Or try :help.
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="nc">Welcome</span> <span class="n">to</span> <span class="nc">Scala</span> <span class="mf">2.12.15</span> <span class="p">(</span><span class="nc">JDK</span> <span class="mi">64</span><span class="o">-</span><span class="nc">Bit</span> <span class="nc">Server</span> <span class="nc">VM</span><span class="p">,</span> <span class="nc">Java</span> <span class="mf">1.8.0_275</span><span class="p">).</span>
+<span class="nc">Type</span> <span class="n">in</span> <span class="n">expressions</span> <span class="k">for</span> <span class="n">evaluation</span><span class="p">.</span> <span class="nc">Or</span> <span class="k">try</span> <span class="p">:</span><span class="n">help</span><span class="p">.</span>
 
-scala&gt; import com.twitter.util.logging.Logging
-import com.twitter.util.logging.Logging
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logging</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logging</span>
 
-scala&gt; import com.twitter.util.logging.Logger
-import com.twitter.util.logging.Logger
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logger</span>
+<span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logger</span>
 
-scala&gt; object MyObject extends Logging {
-     |
-     |   def myLogger: Logger = this.logger
-     |
-     |   def myLoggerName: String = this.loggerName
-     |
-     |   def foo() = {
-     |     info(&quot;Calculating...&quot;)
-     |     &quot;bar&quot;
-     |   }
-     | }
-defined object MyObject
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">object</span> <span class="nc">MyObject</span> <span class="k">extends</span> <span class="nc">Logging</span> <span class="p">{</span>
+     <span class="o">|</span>
+     <span class="o">|</span>   <span class="k">def</span> <span class="nf">myLogger</span><span class="p">:</span> <span class="nc">Logger</span> <span class="o">=</span> <span class="bp">this</span><span class="p">.</span><span class="n">logger</span>
+     <span class="o">|</span>
+     <span class="o">|</span>   <span class="k">def</span> <span class="nf">myLoggerName</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="bp">this</span><span class="p">.</span><span class="n">loggerName</span>
+     <span class="o">|</span>
+     <span class="o">|</span>   <span class="k">def</span> <span class="nf">foo</span><span class="p">()</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="o">|</span>     <span class="n">info</span><span class="p">(</span><span class="s">&quot;Calculating...&quot;</span><span class="p">)</span>
+     <span class="o">|</span>     <span class="s">&quot;bar&quot;</span>
+     <span class="o">|</span>   <span class="p">}</span>
+     <span class="o">|</span> <span class="p">}</span>
+<span class="n">defined</span> <span class="k">object</span> <span class="nc">MyObject</span>
 
-scala&gt; MyObject.myLoggerName
-res0: String = MyObject
+<span class="n">scala</span><span class="o">&gt;</span> <span class="nc">MyObject</span><span class="p">.</span><span class="n">myLoggerName</span>
+<span class="n">res0</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="nc">MyObject</span>
 
-scala&gt; val logger = MyObject.myLogger
-logger: com.twitter.util.logging.Logger = com.twitter.util.logging.Logger@65da4a5d
+<span class="n">scala</span><span class="o">&gt;</span> <span class="kd">val</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">MyObject</span><span class="p">.</span><span class="n">myLogger</span>
+<span class="n">logger</span><span class="p">:</span> <span class="n">com</span><span class="p">.</span><span class="n">twitter</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">logging</span><span class="p">.</span><span class="nc">Logger</span> <span class="o">=</span> <span class="n">com</span><span class="p">.</span><span class="n">twitter</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">logging</span><span class="p">.</span><span class="nc">Logger</span><span class="o">@</span><span class="mf">65d</span><span class="n">a4a5d</span>
 
-scala&gt; logger.name
-res1: String = MyObject
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">logger</span><span class="p">.</span><span class="n">name</span>
+<span class="n">res1</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="nc">MyObject</span>
 
-scala&gt; logger.isInfoEnabled
-res2: Boolean = true
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">logger</span><span class="p">.</span><span class="n">isInfoEnabled</span>
+<span class="n">res2</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="o">=</span> <span class="kc">true</span>
 
-scala&gt; MyObject.foo
-<span class="hll">12:41:20.171 [main] INFO $line5.$read$$iw$$iw$MyObject - Calculating...
-</span>res3: String = bar
+<span class="n">scala</span><span class="o">&gt;</span> <span class="nc">MyObject</span><span class="p">.</span><span class="n">foo</span>
+<span class="hll"><span class="mi">12</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mf">20.171</span> <span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="nc">INFO</span> <span class="n">$line5</span><span class="p">.</span><span class="n">$read$$iw$$iw$MyObject</span> <span class="o">-</span> <span class="nc">Calculating</span><span class="p">...</span>
+</span><span class="n">res3</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="n">bar</span>
 
-scala&gt; class MyClass extends Logging {
-     |
-     |   def myLogger: Logger = this.logger
-     |
-     |   def myLoggerName: String = this.loggerName
-     |
-     |   def bar() = {
-     |     info(&quot;Calculating...&quot;)
-     |     &quot;foo&quot;
-     |   }
-     |
-     | }
-defined class MyClass
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">MyClass</span> <span class="k">extends</span> <span class="nc">Logging</span> <span class="p">{</span>
+     <span class="o">|</span>
+     <span class="o">|</span>   <span class="k">def</span> <span class="nf">myLogger</span><span class="p">:</span> <span class="nc">Logger</span> <span class="o">=</span> <span class="bp">this</span><span class="p">.</span><span class="n">logger</span>
+     <span class="o">|</span>
+     <span class="o">|</span>   <span class="k">def</span> <span class="nf">myLoggerName</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="bp">this</span><span class="p">.</span><span class="n">loggerName</span>
+     <span class="o">|</span>
+     <span class="o">|</span>   <span class="k">def</span> <span class="nf">bar</span><span class="p">()</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="o">|</span>     <span class="n">info</span><span class="p">(</span><span class="s">&quot;Calculating...&quot;</span><span class="p">)</span>
+     <span class="o">|</span>     <span class="s">&quot;foo&quot;</span>
+     <span class="o">|</span>   <span class="p">}</span>
+     <span class="o">|</span>
+     <span class="o">|</span> <span class="p">}</span>
+<span class="n">defined</span> <span class="k">class</span> <span class="nc">MyClass</span>
 
-scala&gt; val c = new MyClass
-c: MyClass = MyClass@eaa901a
+<span class="n">scala</span><span class="o">&gt;</span> <span class="kd">val</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyClass</span>
+<span class="n">c</span><span class="p">:</span> <span class="nc">MyClass</span> <span class="o">=</span> <span class="nc">MyClass</span><span class="nd">@eaa901a</span>
 
-scala&gt; c.myLoggerName
-res4: String = MyClass
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">myLoggerName</span>
+<span class="n">res4</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="nc">MyClass</span>
 
-scala&gt; val logger = c.myLogger
-logger: com.twitter.util.logging.Logger = com.twitter.util.logging.Logger@4a03c4bc
+<span class="n">scala</span><span class="o">&gt;</span> <span class="kd">val</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">myLogger</span>
+<span class="n">logger</span><span class="p">:</span> <span class="n">com</span><span class="p">.</span><span class="n">twitter</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">logging</span><span class="p">.</span><span class="nc">Logger</span> <span class="o">=</span> <span class="n">com</span><span class="p">.</span><span class="n">twitter</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">logging</span><span class="p">.</span><span class="nc">Logger</span><span class="o">@</span><span class="mi">4</span><span class="n">a03c4bc</span>
 
-scala&gt; c.bar
-<span class="hll">12:43:19.130 [main] INFO $line15.$read$$iw$$iw$MyClass - Calculating...
-</span>res5: String = foo
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">bar</span>
+<span class="hll"><span class="mi">12</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mf">19.130</span> <span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="nc">INFO</span> <span class="n">$line15</span><span class="p">.</span><span class="n">$read$$iw$$iw$MyClass</span> <span class="o">-</span> <span class="nc">Calculating</span><span class="p">...</span>
+</span><span class="n">res5</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="n">foo</span>
 
-scala&gt;
+<span class="n">scala</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-slf4j-api/src/main/scala/com/twitter/util/logging/Logger.scala">c.t.util.logging.Logger</a>
+<p class="admonition-title">Note</p>
+<p>The <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-slf4j-api/src/main/scala/com/twitter/util/logging/Logger.scala">c.t.util.logging.Logger</a>
 will <a class="reference external" href="https://github.com/twitter/util/blob/20a66daa41117e473b9d1cba2b2a459efca000af/util-slf4j-api/src/main/scala/com/twitter/util/logging/Logger.scala#L70">remove the trailing</a>
 <cite>$</cite> from <a class="reference external" href="https://docs.scala-lang.org/tour/singleton-objects.html">Scala object</a> class names.</p>
 </div>
-</div>
-<div class="section" id="c-t-util-logging-logger">
+</section>
+<section id="c-t-util-logging-logger">
 <h3><cite>c.t.util.logging.Logger</cite><a class="headerlink" href="#c-t-util-logging-logger" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-slf4j-api/src/main/scala/com/twitter/util/logging/Logger.scala">c.t.util.logging.Logger</a>
 class provides a standard “Logger” interface wrapping the SLF4J <a class="reference external" href="https://www.javadoc.io/static/org.slf4j/slf4j-api/1.7.25/index.html?org/slf4j/Logger.html">org.slf4j.Logger</a>:</p>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span> <span class="k">import</span> <span class="nn">com.twitter.util.logging.Logger</span>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span> <span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logger</span>
 
- <span class="k">private</span> <span class="k">object</span> <span class="nc">MyCompanion</span> <span class="o">{</span>
-<span class="hll">   <span class="k">val</span> <span class="n">logger</span><span class="k">:</span> <span class="kt">Logger</span> <span class="o">=</span> <span class="nc">Logger</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">getClass</span><span class="o">)</span>
-</span> <span class="o">}</span>
+ <span class="k">private</span> <span class="k">object</span> <span class="nc">MyCompanion</span> <span class="p">{</span>
+<span class="hll">   <span class="kd">val</span> <span class="n">logger</span><span class="p">:</span> <span class="nc">Logger</span> <span class="o">=</span> <span class="nc">Logger</span><span class="p">(</span><span class="bp">this</span><span class="p">.</span><span class="n">getClass</span><span class="p">)</span>
+</span> <span class="p">}</span>
 
- <span class="k">class</span> <span class="nc">MyCompanion</span> <span class="o">{</span>
-   <span class="k">import</span> <span class="nn">MyCompanion._</span>
+ <span class="k">class</span> <span class="nc">MyCompanion</span> <span class="p">{</span>
+   <span class="k">import</span> <span class="nc">MyCompanion</span><span class="p">.</span><span class="n">_</span>
 
-   <span class="k">def</span> <span class="n">foo</span><span class="o">()</span> <span class="k">=</span> <span class="o">{</span>
-<span class="hll">     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="o">(</span><span class="s">&quot;Calculating...&quot;</span><span class="o">)</span>
+   <span class="k">def</span> <span class="nf">foo</span><span class="p">()</span> <span class="o">=</span> <span class="p">{</span>
+<span class="hll">     <span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Calculating...&quot;</span><span class="p">)</span>
 </span>     <span class="s">&quot;bar&quot;</span>
-   <span class="o">}</span>
- <span class="o">}</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span> Welcome to Scala 2.12.15 (JDK 64-Bit Server VM, Java 1.8.0_275).
- Type in expressions for evaluation. Or try :help.
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span> <span class="nc">Welcome</span> <span class="n">to</span> <span class="nc">Scala</span> <span class="mf">2.12.15</span> <span class="p">(</span><span class="nc">JDK</span> <span class="mi">64</span><span class="o">-</span><span class="nc">Bit</span> <span class="nc">Server</span> <span class="nc">VM</span><span class="p">,</span> <span class="nc">Java</span> <span class="mf">1.8.0_275</span><span class="p">).</span>
+ <span class="nc">Type</span> <span class="n">in</span> <span class="n">expressions</span> <span class="k">for</span> <span class="n">evaluation</span><span class="p">.</span> <span class="nc">Or</span> <span class="k">try</span> <span class="p">:</span><span class="n">help</span><span class="p">.</span>
 
- scala&gt; import com.twitter.util.logging.Logger
- import com.twitter.util.logging.Logger
+ <span class="n">scala</span><span class="o">&gt;</span> <span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logger</span>
+ <span class="k">import</span> <span class="nn">com</span><span class="p">.</span><span class="nn">twitter</span><span class="p">.</span><span class="nn">util</span><span class="p">.</span><span class="nn">logging</span><span class="p">.</span><span class="nc">Logger</span>
 
- scala&gt; :paste
- // Entering paste mode (ctrl-D to finish)
+ <span class="n">scala</span><span class="o">&gt;</span> <span class="p">:</span><span class="n">paste</span>
+ <span class="c1">// Entering paste mode (ctrl-D to finish)</span>
 
- private object MyCompanion {
-   val logger: Logger = Logger(this.getClass)
- }
+ <span class="k">private</span> <span class="k">object</span> <span class="nc">MyCompanion</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="n">logger</span><span class="p">:</span> <span class="nc">Logger</span> <span class="o">=</span> <span class="nc">Logger</span><span class="p">(</span><span class="bp">this</span><span class="p">.</span><span class="n">getClass</span><span class="p">)</span>
+ <span class="p">}</span>
 
- class MyCompanion {
-   import MyCompanion._
+ <span class="k">class</span> <span class="nc">MyCompanion</span> <span class="p">{</span>
+   <span class="k">import</span> <span class="nc">MyCompanion</span><span class="p">.</span><span class="n">_</span>
 
-   def foo() = {
-     logger.info(&quot;Calculating...&quot;)
-     &quot;bar&quot;
-   }
- }
+   <span class="k">def</span> <span class="nf">foo</span><span class="p">()</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Calculating...&quot;</span><span class="p">)</span>
+     <span class="s">&quot;bar&quot;</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
 
- // Exiting paste mode, now interpreting.
+ <span class="c1">// Exiting paste mode, now interpreting.</span>
 
- defined object MyCompanion
- defined class MyCompanion
+ <span class="n">defined</span> <span class="k">object</span> <span class="nc">MyCompanion</span>
+ <span class="n">defined</span> <span class="k">class</span> <span class="nc">MyCompanion</span>
 
- scala&gt; val c = new MyCompanion
- c: MyCompanion = MyCompanion@63cf578f
+ <span class="n">scala</span><span class="o">&gt;</span> <span class="kd">val</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyCompanion</span>
+ <span class="n">c</span><span class="p">:</span> <span class="nc">MyCompanion</span> <span class="o">=</span> <span class="nc">MyCompanion</span><span class="o">@</span><span class="mi">63</span><span class="n">cf578f</span>
 
- scala&gt; c.foo
-<span class="hll"> 12:52:43.809 [main] INFO $line4.$read$$iw$$iw$MyCompanion - Calculating...
-</span> res0: String = bar
+ <span class="n">scala</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">foo</span>
+<span class="hll"> <span class="mi">12</span><span class="p">:</span><span class="mi">52</span><span class="p">:</span><span class="mf">43.809</span> <span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="nc">INFO</span> <span class="n">$line4</span><span class="p">.</span><span class="n">$read$$iw$$iw$MyCompanion</span> <span class="o">-</span> <span class="nc">Calculating</span><span class="p">...</span>
+</span> <span class="n">res0</span><span class="p">:</span> <span class="nc">String</span> <span class="o">=</span> <span class="n">bar</span>
 
- scala&gt;
+ <span class="n">scala</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>For more information see the util-slf4j-api <a class="reference external" href="https://twitter.github.io/util/docs/com/twitter/util/logging/index.html">scaladocs</a>
 or <a class="reference external" href="https://github.com/twitter/util/blob/develop/util-slf4j-api/README.md">README</a>.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -327,7 +328,7 @@ or <a class="reference external" href="https://github.com/twitter/util/blob/deve
   
 
   <div class="footer">
-    &copy; Copyright 2022 Twitter, Inc.
+    &copy; Copyright 2024 Twitter, Inc.
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</div>
   
   </body>
